@@ -609,7 +609,11 @@ function renderStatusOrc(){
 
   if(nivel==='consultor'&&(aprovStatus==='rascunho'||aprovStatus==='revisao')){
     const txt=aprovStatus==='rascunho'?'📤 Enviar para Análise Técnica':'📤 Reenviar para Análise Técnica';
-    acoes=obs+`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${b('#1565c0',txt,"aprovAcao('analise')")}</div>`;
+    // Verifica se houve reset por edição
+    const ultimoHist=aprovHist.length?aprovHist[aprovHist.length-1]:null;
+    const foiEditado=ultimoHist&&ultimoHist.ico==='⚠️';
+    const aviso=foiEditado?`<div style="background:#fff3cd;border:1px solid #ffe082;border-radius:5px;padding:8px 12px;font-size:11px;color:#7a5a00;margin-bottom:8px;font-weight:700">⚠️ Este orçamento foi editado após aprovação e precisa passar pelo fluxo de aprovação novamente.</div>`:'';
+    acoes=aviso+obs+`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${b('#1565c0',txt,"aprovAcao('analise')")}</div>`;
   } else if(nivel==='tecnico'&&aprovStatus==='analise'){
     acoes=obs+(cImp<=LIMITE_TEC
       ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${b('#2e7d32',"✅ Aprovar (até R$ 4.000)","aprovAcao('aprovado')")}${b('#c62828',"🔄 Solicitar Revisão","aprovAcao('revisao')")}</div>`
@@ -1051,7 +1055,28 @@ function renderAmbContent(s){
   el.innerHTML=`<table class="it" id="tbl-${s}"><thead>${thead}</thead><tbody id="tbody-${s}"></tbody></table>${addBar}`;
   setTimeout(()=>{const sel=document.getElementById('sel-'+s);if(sel&&PRECOS[s]){PRECOS[s].forEach(it=>{const o=document.createElement('option');o.value=JSON.stringify(it);o.text=it.n+(it.v?' – R$ '+fmtN(it.v):'');sel.appendChild(o);});}renderRows(s);},0);
 }
-function moveRow(s,aid,id,dir){const rows=state[s].rows[aid];const i=rows.findIndex(r=>r.id===id);if(i<0||(dir===-1&&i===0)||(dir===1&&i===rows.length-1))return;const[item]=rows.splice(i,1);rows.splice(i+dir,0,item);renderRows(s);calc();}
+// ── Detecta edição após aprovação e reseta status ────
+function verificarEdicaoAposAprovacao(){
+  if(aprovStatus==='aprovado' && usuarioAtual){
+    aprovHist.push({
+      ico:'⚠️',
+      acao:'Orçamento editado após aprovação — status resetado',
+      usuario:usuarioAtual.nome,
+      cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel,
+      data:new Date().toLocaleString('pt-BR'),
+      obs:'Edição detectada. Nova aprovação necessária.'
+    });
+    aprovStatus='rascunho';
+    renderStatusOrc();
+    // Salva automaticamente no Drive se já tiver ID
+    if(driveIdAtual){
+      const num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];
+      fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state,aprovStatus,aprovHist}})}).catch(()=>{});
+    }
+  }
+}
+
+const rows=state[s].rows[aid];const i=rows.findIndex(r=>r.id===id);if(i<0||(dir===-1&&i===0)||(dir===1&&i===rows.length-1))return;const[item]=rows.splice(i,1);rows.splice(i+dir,0,item);renderRows(s);calc();}
 function selItem(s,sel){if(!sel.value)return;const it=JSON.parse(sel.value);addRow(s,it.n,it.v,false);sel.value='';}
 function addCustom(s){addRow(s,'',0,true);}
 function addRow(s,name,val,custom){
@@ -1059,6 +1084,7 @@ function addRow(s,name,val,custom){
   const painel=s==='video'&&isPainel(name),palco=s==='estrutura'&&isPalco(name);
   const dAuto=s==='servico'?getDiasEvento():s==='logistica'?1:getDiariasEquip();
   st.rows[aid].push({id:uid(),name,val,qty:1,diaria:dAuto,custom,painel,larg:painel?3:palco?4:null,alt:painel?2:null,prof:palco?2:null,elev:painel?0:null,elObj:palco?ELEV[0]:null,palco,carp:palco?false:null,carpT:palco?'novo':null,carpC:palco?'':null,marg:20});
+  verificarEdicaoAposAprovacao();
   renderRows(s);calc();
 }
 function rowTot(r){if(r.painel)return safe(r.larg*r.alt*r.val*r.diaria*r.qty);if(r.palco||isPalco(r.name))return safe(calcPalco(r).total*r.diaria*r.qty);return safe(r.qty*r.val*r.diaria);}
@@ -1146,14 +1172,20 @@ function updRow(s,aid,id,field,val){
   else r[field]=val;
   if(field==='name'&&s==='video'){r.painel=isPainel(val);if(r.painel&&r.larg==null){r.larg=3;r.alt=2;r.elev=0;}}
   if(field==='name'&&s==='estrutura'){r.palco=isPalco(val);if(r.palco){r.larg=4;r.prof=2;r.elObj=ELEV[0];r.carp=false;r.carpT='novo';r.carpC='';}}
+  verificarEdicaoAposAprovacao();
   renderRows(s);calc();
 }
-function delRow(s,aid,id){state[s].rows[aid]=state[s].rows[aid].filter(x=>x.id!==id);renderRows(s);calc();}
+function delRow(s,aid,id){
+  state[s].rows[aid]=state[s].rows[aid].filter(x=>x.id!==id);
+  verificarEdicaoAposAprovacao();
+  renderRows(s);calc();
+}
 
 // ══════════════════════════════════════════════════════
 // CÁLCULO
 // ══════════════════════════════════════════════════════
 function syncDesc(from){
+  verificarEdicaoAposAprovacao();
   const bruto=['som','video','luz','estrutura','servico','logistica'].reduce((t,s)=>t+secTotAll(s),0);
   const cImp=bruto*(1+IMP);
   if(from==='pct')document.getElementById('desc-rs').value=(cImp*(parseFloat(gv('desc-pct'))||0)/100).toFixed(2);
