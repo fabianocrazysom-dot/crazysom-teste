@@ -1076,7 +1076,6 @@ function addRow(s,name,val,custom){
   const painel=s==='video'&&isPainel(name),palco=s==='estrutura'&&isPalco(name);
   const dAuto=s==='servico'?getDiasEvento():s==='logistica'?1:getDiariasEquip();
   st.rows[aid].push({id:uid(),name,val,qty:1,diaria:dAuto,custom,painel,larg:painel?3:palco?4:null,alt:painel?2:null,prof:palco?2:null,elev:painel?0:null,elObj:palco?ELEV[0]:null,palco,carp:palco?false:null,carpT:palco?'novo':null,carpC:palco?'':null,marg:20});
-  verificarEdicaoAposAprovacao();
   renderRows(s);calc();
 }
 function rowTot(r){if(r.painel)return safe(r.larg*r.alt*r.val*r.diaria*r.qty);if(r.palco||isPalco(r.name))return safe(calcPalco(r).total*r.diaria*r.qty);return safe(r.qty*r.val*r.diaria);}
@@ -1181,12 +1180,10 @@ function updRow(s,aid,id,field,val){
   else r[field]=val;
   if(field==='name'&&s==='video'){r.painel=isPainel(val);if(r.painel&&r.larg==null){r.larg=3;r.alt=2;r.elev=0;}}
   if(field==='name'&&s==='estrutura'){r.palco=isPalco(val);if(r.palco){r.larg=4;r.prof=2;r.elObj=ELEV[0];r.carp=false;r.carpT='novo';r.carpC='';}}
-  verificarEdicaoAposAprovacao();
   renderRows(s);calc();
 }
 function delRow(s,aid,id){
   state[s].rows[aid]=state[s].rows[aid].filter(x=>x.id!==id);
-  verificarEdicaoAposAprovacao();
   renderRows(s);calc();
 }
 
