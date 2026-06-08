@@ -609,7 +609,6 @@ function renderStatusOrc(){
 
   if(nivel==='consultor'&&(aprovStatus==='rascunho'||aprovStatus==='revisao')){
     const txt=aprovStatus==='rascunho'?'📤 Enviar para Análise Técnica':'📤 Reenviar para Análise Técnica';
-    // Verifica se houve reset por edição
     const ultimoHist=aprovHist.length?aprovHist[aprovHist.length-1]:null;
     const foiEditado=ultimoHist&&ultimoHist.ico==='⚠️';
     const aviso=foiEditado?`<div style="background:#fff3cd;border:1px solid #ffe082;border-radius:5px;padding:8px 12px;font-size:11px;color:#7a5a00;margin-bottom:8px;font-weight:700">⚠️ Este orçamento foi editado após aprovação e precisa passar pelo fluxo de aprovação novamente.</div>`:'';
@@ -1057,22 +1056,21 @@ function renderAmbContent(s){
 }
 // ── Detecta edição após aprovação e reseta status ────
 function verificarEdicaoAposAprovacao(){
-  if(aprovStatus==='aprovado' && usuarioAtual){
-    aprovHist.push({
-      ico:'⚠️',
-      acao:'Orçamento editado após aprovação — status resetado',
-      usuario:usuarioAtual.nome,
-      cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel,
-      data:new Date().toLocaleString('pt-BR'),
-      obs:'Edição detectada. Nova aprovação necessária.'
-    });
-    aprovStatus='rascunho';
-    renderStatusOrc();
-    // Salva automaticamente no Drive se já tiver ID
-    if(driveIdAtual){
-      const num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];
-      fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state,aprovStatus,aprovHist}})}).catch(()=>{});
-    }
+  if(aprovStatus!=='aprovado') return;
+  if(!usuarioAtual) return;
+  aprovHist.push({
+    ico:'⚠️',
+    acao:'Orçamento editado após aprovação — status resetado',
+    usuario:usuarioAtual.nome,
+    cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel,
+    data:new Date().toLocaleString('pt-BR'),
+    obs:'Edição detectada. Nova aprovação necessária.'
+  });
+  aprovStatus='rascunho';
+  renderStatusOrc();
+  if(driveIdAtual){
+    const num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];
+    fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state,aprovStatus,aprovHist}})}).catch(()=>{});
   }
 }
 
@@ -1185,7 +1183,7 @@ function delRow(s,aid,id){
 // CÁLCULO
 // ══════════════════════════════════════════════════════
 function syncDesc(from){
-  verificarEdicaoAposAprovacao();
+  if(aprovStatus==='aprovado'&&usuarioAtual) verificarEdicaoAposAprovacao();
   const bruto=['som','video','luz','estrutura','servico','logistica'].reduce((t,s)=>t+secTotAll(s),0);
   const cImp=bruto*(1+IMP);
   if(from==='pct')document.getElementById('desc-rs').value=(cImp*(parseFloat(gv('desc-pct'))||0)/100).toFixed(2);
