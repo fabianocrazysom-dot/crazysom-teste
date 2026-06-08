@@ -433,6 +433,8 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
     </div>
   </div>
   <div class="sep">
+    <!-- Subtotal por ambiente (aparece só com múltiplos ambientes) -->
+    <div id="subtot-geral-ambientes" style="display:none;background:#0a0a0a;border:1px solid #222;border-radius:6px;padding:11px 14px;margin-bottom:10px"></div>
     <div class="tg2" style="margin-bottom:10px">
       <div>
         <div class="drow"><label>Desconto %</label><input type="number" id="desc-pct" value="0" min="0" max="100" step="0.5" oninput="syncDesc('pct')"><span style="color:#aaa;font-size:10px">= <span id="r-dv" style="color:#ff6060">R$ 0,00</span></span></div>
@@ -1046,32 +1048,24 @@ function renderAmbContent(s){
   const el=document.getElementById('ambcontent-'+s);if(!el)return;
   const st=state[s],aid=st.ambAtiva;if(!st.rows[aid])st.rows[aid]=[];
   let addBar=s==='extra'
-    ?`<div class="add-bar"><div class="f"><label>Adicionar</label><select id="sel-${s}" onchange="selItem('${s}',this)"><option value="">— Selecione —</option></select></div><button class="btn btn-o btn-sm" onclick="addCustom('${s}')">+ Personalizado</button></div><div class="stot">Custo: <b id="tot-extra">R$ 0,00</b> | Cobrado: <b id="tot-extra-cob">R$ 0,00</b></div>`
-    :`<div class="add-bar"><div class="f"><label>Buscar item</label><select id="sel-${s}" onchange="selItem('${s}',this)"><option value="">— Selecione da tabela —</option></select></div><button class="btn btn-o btn-sm" onclick="addCustom('${s}')">+ Personalizado</button></div><div class="stot">Total ${SEC_LBL[s]}: <b id="tot-${s}">R$ 0,00</b> | c/Imp: <b id="tot-${s}-imp">R$ 0,00</b></div>`;
+    ?`<div class="add-bar"><div class="f"><label>Adicionar</label><select id="sel-${s}" onchange="selItem('${s}',this)"><option value="">— Selecione —</option></select></div><button class="btn btn-o btn-sm" onclick="addCustom('${s}')">+ Personalizado</button></div>
+    <div class="stot">Custo: <b id="tot-extra">R$ 0,00</b> | Cobrado: <b id="tot-extra-cob">R$ 0,00</b></div>
+    <div id="subtot-amb-${s}" style="display:none;background:#fff3e0;border:1px solid #ffb74d;border-radius:4px;padding:5px 10px;margin-top:5px;font-size:11px;color:#e65100;font-weight:700"></div>`
+    :`<div class="add-bar"><div class="f"><label>Buscar item</label><select id="sel-${s}" onchange="selItem('${s}',this)"><option value="">— Selecione da tabela —</option></select></div><button class="btn btn-o btn-sm" onclick="addCustom('${s}')">+ Personalizado</button></div>
+    <div class="stot">Total ${SEC_LBL[s]}: <b id="tot-${s}">R$ 0,00</b> | c/Imp: <b id="tot-${s}-imp">R$ 0,00</b></div>
+    <div id="subtot-amb-${s}" style="display:none;background:#e8f4fd;border:1px solid #90caf9;border-radius:4px;padding:5px 10px;margin-top:5px;font-size:11px;color:#1565c0;font-weight:700"></div>`;
   const thead=s==='logistica'
     ?`<tr><th style="width:44px"></th><th>Qtd</th><th colspan="2">Descrição</th><th>Valor Unit.</th><th>Total</th><th>c/Imp</th><th></th></tr>`
     :`<tr><th style="width:44px"></th><th>Qtd</th><th>Descrição</th><th>Diária</th><th>Valor Unit.</th><th>Total</th><th>c/Imp</th><th></th></tr>`;
   el.innerHTML=`<table class="it" id="tbl-${s}"><thead>${thead}</thead><tbody id="tbody-${s}"></tbody></table>${addBar}`;
   setTimeout(()=>{const sel=document.getElementById('sel-'+s);if(sel&&PRECOS[s]){PRECOS[s].forEach(it=>{const o=document.createElement('option');o.value=JSON.stringify(it);o.text=it.n+(it.v?' – R$ '+fmtN(it.v):'');sel.appendChild(o);});}renderRows(s);},0);
 }
-// ── Detecta edição após aprovação e reseta status ────
 function verificarEdicaoAposAprovacao(){
-  if(aprovStatus!=='aprovado') return;
-  if(!usuarioAtual) return;
-  aprovHist.push({
-    ico:'⚠️',
-    acao:'Orçamento editado após aprovação — status resetado',
-    usuario:usuarioAtual.nome,
-    cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel,
-    data:new Date().toLocaleString('pt-BR'),
-    obs:'Edição detectada. Nova aprovação necessária.'
-  });
+  if(aprovStatus!=='aprovado'||!usuarioAtual){return;}
+  aprovHist.push({ico:'⚠️',acao:'Editado após aprovação — nova aprovação necessária',usuario:usuarioAtual.nome,cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel,data:new Date().toLocaleString('pt-BR'),obs:''});
   aprovStatus='rascunho';
   renderStatusOrc();
-  if(driveIdAtual){
-    const num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];
-    fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state,aprovStatus,aprovHist}})}).catch(()=>{});
-  }
+  if(driveIdAtual){const num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state,aprovStatus,aprovHist}})}).catch(function(){});}
 }
 
 const rows=state[s].rows[aid];const i=rows.findIndex(r=>r.id===id);if(i<0||(dir===-1&&i===0)||(dir===1&&i===rows.length-1))return;const[item]=rows.splice(i,1);rows.splice(i+dir,0,item);renderRows(s);calc();}
@@ -1158,6 +1152,23 @@ function renderRows(s){
   const cnt=Object.values(state[s].rows).reduce((t,a)=>t+a.length,0);
   const b=document.getElementById('sbadge-'+s);if(b)b.textContent=cnt;
   const totAll=secTotAll(s);
+  // Subtotal do ambiente ativo
+  const totAmb=rows.reduce((t,r)=>t+rowTot(r),0);
+  const ambAtivos=state[s].ambientes.length>1;
+  const subEl=document.getElementById('subtot-amb-'+s);
+  if(subEl){
+    if(ambAtivos&&rows.length>0){
+      const ambNome=state[s].ambientes.find(a=>a.id===state[s].ambAtiva)?.nome||'Geral';
+      if(s==='extra'){
+        const custo=rows.reduce((t,r)=>t+r.qty*r.val*r.diaria,0);
+        subEl.style.display='block';
+        subEl.innerHTML=`📍 Subtotal <b>${ambNome}</b> — Custo: ${fmt(custo)}`;
+      } else {
+        subEl.style.display='block';
+        subEl.innerHTML=`📍 Subtotal <b>${ambNome}</b> — ${fmt(totAmb)} | c/Imp: ${fmt(totAmb*(1+IMP))}`;
+      }
+    } else { subEl.style.display='none'; }
+  }
   if(s==='extra'){const custo=rows.reduce((t,r)=>t+r.qty*r.val*r.diaria,0);const cob=rows.reduce((t,r)=>t+r.qty*r.val*r.diaria*(1+r.marg/100),0);sv('tot-extra',fmt(custo));sv('tot-extra-cob',fmt(cob));}
   else{const tEl=document.getElementById('tot-'+s),tiEl=document.getElementById('tot-'+s+'-imp');if(tEl)tEl.textContent=fmt(totAll);if(tiEl)tiEl.textContent=fmt(totAll*(1+IMP));}
 }
@@ -1209,6 +1220,25 @@ function calc(){
   sv('m-sd',fmt(msd));sv('m-cd',fmt(mcd));sv('m-sd-pct',fmtN(msdP)+'%');sv('m-cd-pct',fmtN(mcdP)+'%');
   const dl=document.getElementById('desc-label');
   if(dl)dl.textContent=dv>0?'Desconto: -'+fmt(dv):(vl>0?'Valor ajustado manualmente':'');
+
+  // Subtotal geral por ambiente (só exibe se houver múltiplos ambientes)
+  const todosAmbs=[];const ambIdsC=new Set();
+  const SECS_CALC=['som','video','luz','estrutura','servico','logistica'];
+  SECS_CALC.forEach(s=>{state[s].ambientes.forEach(a=>{if(!ambIdsC.has(a.id)){ambIdsC.add(a.id);todosAmbs.push({id:a.id,nome:a.nome});}});});
+  const subGeral=document.getElementById('subtot-geral-ambientes');
+  if(subGeral){
+    if(todosAmbs.length>1){
+      let html='<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:8px;font-weight:700">📍 Subtotal por Ambiente</div>';
+      todosAmbs.forEach(amb=>{
+        const t=SECS_CALC.reduce((tot,s)=>(state[s].rows[amb.id]||[]).reduce((a,r)=>a+rowTot(r),tot),0);
+        if(t>0) html+=`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #222;font-size:12px"><span style="color:#ccc">🏢 ${amb.nome}</span><span style="color:#fff;font-weight:700">${fmt(t)} <span style="color:#999;font-size:10px">| c/imp ${fmt(t*(1+IMP))}</span></span></div>`;
+      });
+      subGeral.innerHTML=html;
+      subGeral.style.display='block';
+    } else {
+      subGeral.style.display='none';
+    }
+  }
   renderStatusOrc();
 }
 
