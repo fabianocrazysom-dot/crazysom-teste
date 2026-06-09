@@ -146,20 +146,17 @@ table.it input,table.it select{padding:2px 5px;font-size:11px}
 .adm-sel{padding:5px 8px;background:#1c1c1c;border:1px solid #333;border-radius:4px;color:#fff;font-size:11px}
 .adm-save{padding:5px 10px;background:var(--R);color:#fff;border:none;border-radius:4px;font-size:10px;cursor:pointer;font-weight:700}
 .adm-del{padding:5px 8px;background:#c62828;color:#fff;border:none;border-radius:4px;font-size:10px;cursor:pointer;font-weight:700}
-/* DRIVE */
-.drive-panel{background:#fff;padding:15px 18px;border-bottom:1px solid #eee}
-.drive-search{display:flex;gap:8px;margin-bottom:10px;align-items:center}
-.drive-search input{flex:1;padding:7px 10px;border:1px solid #ccc;border-radius:4px;font-size:12px}
-.drive-list{max-height:240px;overflow-y:auto;border:1px solid #eee;border-radius:4px}
-.drive-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #f5f5f5;font-size:11px}
-.drive-item:hover{background:#fff8f8}
-.di-nome{flex:1;font-weight:600;color:#222}
-.di-data{color:#999;font-size:10px;white-space:nowrap}
+/* DRIVE Oculto/Adaptado */
+.drive-list{max-height:240px;overflow-y:auto;border:1px solid #333;border-radius:4px;background:#111;margin-top:10px}
+.drive-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #222;font-size:11px}
+.drive-item:hover{background:#1a1a1a}
+.di-nome{flex:1;font-weight:600;color:#fff}
+.di-data{color:#888;font-size:10px;white-space:nowrap}
 .btn-dl{background:#1565c0;color:#fff;border:none;border-radius:3px;padding:3px 8px;font-size:10px;cursor:pointer;font-weight:700}
 .btn-ddel{background:#e53935;color:#fff;border:none;border-radius:3px;padding:3px 6px;font-size:10px;cursor:pointer}
 .drive-status{font-size:10px;margin-top:5px;min-height:14px}
-.drive-status.ok{color:#2e7d32}
-.drive-status.err{color:#c0001a}
+.drive-status.ok{color:#4caf50}
+.drive-status.err{color:#ff5555}
 /* PDF */
 .pov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;overflow-y:auto;padding:18px;flex-direction:column;align-items:center;gap:11px}
 .pov.open{display:flex}
@@ -359,17 +356,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<div class="drive-panel">
-  <div class="st" style="margin:-15px -18px 11px">☁️ Orçamentos – Google Drive</div>
-  <div class="drive-search">
-    <input id="drive-q" placeholder="🔍 Buscar por número, cliente ou data...">
-    <button class="btn btn-b btn-sm" onclick="driveListar()">🔍 Localizar</button>
-    <button class="btn btn-g btn-sm" onclick="driveSalvar()">☁️ Salvar no Drive</button>
-  </div>
-  <div id="drive-list" class="drive-list" style="display:none"></div>
-  <div id="drive-status" class="drive-status"></div>
-</div>
-
 <div class="card">
   <div class="st">🎛️ Itens do Orçamento</div>
   <div class="tabs" id="tabs-wrap"></div>
@@ -442,8 +428,19 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
 
   <div id="status-orc-acoes-bottom" style="display:none;background:#1c1c1c;border:1px solid #333;border-radius:6px;padding:11px 14px;margin-top:9px"></div>
 
+  <div class="mbox" style="margin-top:12px; border-color:#333;">
+    <h3 style="color:#aaa; font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:7px">☁️ Orçamentos – Google Drive</h3>
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+      <input id="drive-q" placeholder="🔍 Buscar por número ou cliente (deixe vazio para listar todos)..." style="flex:1; padding:7px 10px; border:1px solid #333; border-radius:4px; font-size:12px; background:#1c1c1c; color:#fff">
+      <button class="btn btn-b btn-sm" style="padding:6px 12px" onclick="driveListar()">🔍 Localizar</button>
+      <button class="btn btn-g btn-sm" style="padding:6px 12px" onclick="driveSalvar()">☁️ Salvar no Drive</button>
+    </div>
+    <div id="drive-list" class="drive-list" style="display:none"></div>
+    <div id="drive-status" class="drive-status" style="margin-top:8px"></div>
+  </div>
+
   <div class="sbar">
-    <span>💾 Orçamento</span>
+    <span>💾 Salvar / Carregar</span>
     <button class="btn btn-g btn-sm" onclick="salvar()">💾 Salvar local</button>
     <label class="btn btn-b btn-sm" style="cursor:pointer">📂 Carregar<input type="file" accept=".json" style="display:none" onchange="carregar(this)"></label>
     <button class="btn btn-d btn-sm" onclick="gerarOS()">📋 OS</button>
@@ -600,18 +597,7 @@ function calcDiariasAuto(){
   calc();
 }
 
-// PREÇOS
-var PRECOS={
-  som:[{n:"Amplificador De Potência Até 5K",v:100},{n:"Caixa Ativa (Selenium/JBL/Lexsen/Staner)",v:100},{n:"Caixa Ativa Jbl Eon515xt",v:120},{n:"Caixa Ativa Jbl Eon612",v:120},{n:"Caixa Ativa Jbl Max 10",v:100},{n:"Caixa Ativa Jbl Max 10 (monitor)",v:100},{n:'Caixa Sub Grave T18 1X18" Passiva 800W',v:80},{n:'Caixa Sub Grave Taigar 2X18" 2400W',v:150},{n:'Caixa Line Array Taigar 2X8" 740W',v:100},{n:"Caixa Line Slim Turbosound Ip500",v:250},{n:"Caixa Line Slim Soundking ARTOS 1200",v:250},{n:"Caixa Line Slim Blg 1515A",v:300},{n:"Caixa Line Slim Taigar V851",v:500},{n:"Caixa Passiva Leacs 100W",v:60},{n:"Caixa Treeway Passiva 450W",v:80},{n:"Caixas Monitor Attack (Retorno)",v:100},{n:"Cubo de Baixo",v:150},{n:"Cubo de Guitarra",v:100},{n:"Direct Box Ativo Ou Passivo",v:30},{n:"Kit Dj 02 Cdj 350 Pioneer + Mixer",v:200},{n:"Kit Microfonação de bateria",v:120},{n:"Kit Pioneer 02 CDJ 2000 Nexus 2 + Mixer DJM 900",v:800},{n:"Mesa Som Analógica 04 Canais",v:100},{n:"Mesa Som Analógica 06 Canais",v:100},{n:"Mesa Som Analógica Behringer/Yamaha 12 Canais",v:100},{n:"Mesa Som Digital Midas M32 32 Canais",v:400},{n:"Mesa Som Digital Soundcraft Ui24 24 Canais",v:250},{n:"Mesa Som Digital Yamaha 01V 16 Canais",v:200},{n:"Mesa Som Digital Duonn Atrium 12 Canais",v:200},{n:"Microfone Com Fio Akg/Samson/Sennheiser",v:30},{n:"Microfone Com Fio Shure Sm58",v:60},{n:"Microfone Goosneck (pulpito)",v:100},{n:"Microfone Sem Fio Bastão Sennheiser",v:120},{n:"Microfone Sem Fio Headset Sennheiser",v:120},{n:"Microfone Sem Fio Bastão Shure",v:120},{n:"Microfone Sem Fio Bastão Kadosh",v:100},{n:"Antena longo alcance Combainer",v:150},{n:"Notebook Para Trilhas",v:120},{n:"Pedestal De Microfone",v:30},{n:"Power Play (sem fones)",v:100},{n:"Rack De Amplificação E Processamento",v:300}],
-  video:[{n:"Base plataforma de abrir",v:300},{n:"Cpu Servidor De Vídeo",v:350},{n:"Estrutura P30 Até 10M² De Painel",v:250},{n:"Estrutura P30 Até 10M² Outdoor",v:500},{n:"Estrutura P30 Até 24M² De Painel",v:500},{n:"Notebook Placa De Vídeo Dedicado",v:150},{n:"Painel Led Ph2.5Mm Indoor",v:300},{n:"Painel Led Ph2.9Mm Indoor",v:250},{n:"Painel Led Ph3.9Mm Outdoor",v:250},{n:"Painel Led Ph6Mm Indoor",v:150},{n:"Passador de slides",v:50},{n:"Poster Led 1,00x2,00M P2.5mm",v:1200},{n:"Poster Led 1,00x3,00M P2.5mm",v:1800},{n:"Processadora De Vídeo",v:300},{n:"Processadora TB 40",v:300},{n:"Projetor 2.700 Lumens",v:120},{n:"Projetor 3.500 Lumens",v:150},{n:"Tela de projeção e pedestal",v:100},{n:'Totem Touch 32" Armário',v:1300},{n:'Totem Touch 32" Curvo',v:1200},{n:'Totem Touch 40" Armário',v:1500},{n:'Totem Touch 55" Armário',v:1700},{n:'Totem Touch 70" Armário',v:1900},{n:"Diaria adicional Totem",v:200},{n:"Adesivação Totem",v:300},{n:"Pedestal suporte TV",v:30},{n:'Tv 32"',v:120},{n:'Tv 40"/43"',v:150},{n:'Tv 55"',v:300},{n:'Tv 70"',v:500},{n:'Tv 98"',v:1000},{n:'Tv 32" doghouse + notebook cronometro',v:250},{n:'Tv 40" doghouse + notebook cronometro',v:300},{n:'Tv 32" doghouse + Spliter HDMI retorno',v:250},{n:'Tv 40" doghouse + Spliter HDMI retorno',v:300},{n:"Webcam Logitech C920",v:100}],
-  luz:[{n:"Canhão Led 3W Rgb",v:30},{n:"Canhão Led 5W Rgbwa",v:35},{n:"Cabeamento / elétrica",v:100},{n:"Cabo trifasico com granada",v:100},{n:"Main Power",v:100},{n:"Elipisoidal Led",v:80},{n:"Fresnel Cob 200 Led",v:60},{n:"Máquina De Fumaça",v:100},{n:"Máquina De Fumaça Haze",v:150},{n:"Mesa Controladora Dmx",v:50},{n:"Mesa Grand M.A.2",v:350},{n:"Mini Brut",v:50},{n:"Moving Head Beam 200 5R",v:125},{n:"Moving Head Beam 9R",v:150},{n:"Moving Head Wash",v:150},{n:"Refletor HQI",v:50},{n:"Refletor LED branco 100w",v:30},{n:"Ribalta Led Rgb",v:75},{n:"Sistema Gerenciamento Lumikit",v:150},{n:"Spliter DMX",v:50},{n:"Strobo LED RGB",v:50},{n:"Varal De Luz 15M",v:80},{n:"Varal De Luz 30M",v:150}],
-  estrutura:[{n:"Palco",v:0},{n:"Backdrop 2Mx2M Boxtruss P15",v:280},{n:"Backdrop 3Mx2M Boxtruss P15",v:320},{n:"Backdrop 3Mx3M Boxtruss P15",v:360},{n:"Backdrop 4Mx2M Boxtruss P15",v:360},{n:"Backdrop 5Mx3M Boxtruss P15",v:440},{n:"Alumalock",v:50},{n:"Boxtruss Treliça P15 (M)",v:20},{n:"Boxtruss Treliça P30 (M)",v:25},{n:"Boxtruss Treliça Q30 (M)",v:20},{n:"Cubo P15",v:20},{n:"Cubo P30",v:25},{n:"Cubo Q30",v:20},{n:"Escada Palco Até 60Cm",v:60},{n:"Escada Palco 60 A 100Cm",v:100},{n:"Grade de contenção 2,00x1,00M",v:20},{n:"Guarda corpo 2,00x1,00m",v:20},{n:"Praticavel 2x1 20/30/40Cm",v:100},{n:"Praticavel 2x1 60 A 100Cm",v:100},{n:"Carpete Semi-Novo (M²)",v:25},{n:"Carpete Novo (M²)",v:40},{n:"Púlpito de acrílico",v:250},{n:"Sleeve block",v:50},{n:"Talha",v:50},{n:"Torre Boxtruss 3M",v:80},{n:"Unifilas",v:40}],
-  servico:[{n:"Técnico de Vídeo",v:400},{n:"Técnico de Áudio",v:400},{n:"Técnico de Luz",v:400},{n:"Técnico Audiovisual",v:350},{n:"Auxiliar Técnico",v:300},{n:"Laudo Técnico + ART",v:750}],
-  logistica:[{n:"Montagem",v:200},{n:"Desmontagem",v:100},{n:"Hotel",v:0},{n:"Almoço/Janta",v:45},{n:"Frete",v:0},{n:"Combustível",v:0},{n:"Projeto",v:0},{n:"Pedágio",v:0},{n:"Carregadores",v:200}],
-  extra:[{n:"Locação equipamento externo",v:0},{n:"Fornecedor terceiro",v:0},{n:"Consumíveis",v:0},{n:"Manutenção",v:0},{n:"Outros custos",v:0}]
-};
-
-// LOGIN
+// LOGIN E LOGOUT
 function doLogin(){
   var uid=(document.getElementById('l-user').value||'').trim().toLowerCase();
   var pwd=document.getElementById('l-pass').value||'';
@@ -1181,17 +1167,38 @@ function calc(){
 
 // DRIVE
 function driveStatus(msg,tipo){var el=document.getElementById('drive-status');if(!el)return;el.textContent=msg;el.className='drive-status '+(tipo||'');if(msg)setTimeout(function(){if(el.textContent===msg)el.textContent='';},5000);}
+
 async function driveListar(){
-  var el=document.getElementById('drive-list');el.style.display='block';
-  el.innerHTML='<div class="drive-item" style="color:#888">⏳ Buscando...</div>';
+  var q = (gv('drive-q')||'').trim();
+  var el=document.getElementById('drive-list');
+  
+  if (q === '') {
+    el.style.display='block';
+    el.innerHTML='<div class="drive-item" style="color:#888; border:none">⏳ Buscando todos os orçamentos...</div>';
+  } else {
+    el.style.display='none';
+    driveStatus('⏳ Buscando e carregando...', '');
+  }
+
   try{
-    var r=await fetch(SCRIPT_URL+'?action=list&q='+encodeURIComponent(gv('drive-q')||''));
+    var r=await fetch(SCRIPT_URL+'?action=list&q='+encodeURIComponent(q));
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
     var lista=d.lista||[];
-    if(!lista.length){el.innerHTML='<div class="drive-item" style="color:#aaa">Nenhum resultado.</div>';return;}
-    el.innerHTML=lista.map(function(x){return '<div class="drive-item"><div class="di-nome">📄 '+x.nome+'</div><div class="di-data">'+x.modificado+'</div><button class="btn-dl" onclick="driveCarregar(\''+x.id+'\',\''+eh(x.nome)+'\')">📂 Abrir</button><button class="btn-ddel" onclick="driveDeletar(\''+x.id+'\',\''+eh(x.nome)+'\')" title="Excluir">🗑️</button></div>';}).join('');
-  }catch(e){el.innerHTML='<div class="drive-item" style="color:#c0001a">⚠️ Erro ao conectar</div>';driveStatus('Erro: '+e.message,'err');}
+    
+    if (q === '') {
+        if(!lista.length){el.innerHTML='<div class="drive-item" style="color:#aaa; border:none">Nenhum resultado no Drive.</div>';return;}
+        el.innerHTML=lista.map(function(x){return '<div class="drive-item"><div class="di-nome">📄 '+x.nome+'</div><div class="di-data">'+x.modificado+'</div><button class="btn-dl" onclick="driveCarregar(\''+x.id+'\',\''+eh(x.nome)+'\')">📂 Abrir</button><button class="btn-ddel" onclick="driveDeletar(\''+x.id+'\',\''+eh(x.nome)+'\')" title="Excluir">🗑️</button></div>';}).join('');
+    } else {
+        if(!lista.length){ driveStatus('⚠️ Nenhum orçamento encontrado para "'+q+'"', 'err'); return; }
+        // Carrega automaticamente o primeiro encontrado sem mostrar a lista
+        driveCarregar(lista[0].id, lista[0].nome);
+    }
+  }catch(e){
+    if (q === '') { el.innerHTML='<div class="drive-item" style="color:#ff5555; border:none">⚠️ Erro ao conectar</div>'; }
+    driveStatus('Erro: '+e.message,'err');
+  }
 }
+
 async function driveSalvar(){
   driveStatus('⏳ Salvando...','');
   var num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];
@@ -1200,7 +1207,10 @@ async function driveSalvar(){
     var r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual||null,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state:state,aprovStatus:aprovStatus,aprovHist:aprovHist}})});
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
     driveIdAtual=d.id;driveNumAtual=num;
-    driveStatus('✅ Salvo: '+d.nome,'ok');driveListar();
+    driveStatus('✅ Salvo: '+d.nome,'ok');
+    
+    // Atualiza a lista caso ela esteja sendo exibida
+    if (document.getElementById('drive-list').style.display === 'block') { driveListar(); }
   }catch(e){driveStatus('Erro: '+e.message,'err');}
 }
 async function driveCarregar(id,nome){
