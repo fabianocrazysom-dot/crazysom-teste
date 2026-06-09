@@ -496,8 +496,27 @@ var impAtual='cimp';
 
 function hs(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h=h|0;}return String(h);}
 
-var state={};
-SECS.forEach(function(s){state[s]={ambientes:[{id:'default',nome:'Geral'}],ambAtiva:'default',rows:{default:[]}};});
+// Migração e Normalização de orçamentos antigos
+function normalizarState(ds) {
+  var ns = {};
+  SECS.forEach(function(s){
+    ns[s] = { ambientes:[{id:'default',nome:'Geral'}], ambAtiva:'default', rows:{default:[]} };
+    if (ds && ds[s]) {
+      if (Array.isArray(ds[s])) {
+        // Orçamento da versão antiga (antes de existir múltiplos ambientes)
+        ns[s].rows = { 'default': ds[s] };
+      } else {
+        ns[s].ambientes = ds[s].ambientes || [{id:'default',nome:'Geral'}];
+        ns[s].ambAtiva = ds[s].ambAtiva || 'default';
+        ns[s].rows = ds[s].rows || { 'default': [] };
+      }
+      if(!ns[s].rows[ns[s].ambAtiva]) ns[s].rows[ns[s].ambAtiva] = [];
+    }
+  });
+  return ns;
+}
+
+var state = normalizarState(null);
 
 var PX={'Painel Led Ph2.5Mm Indoor':384,'Painel Led Ph2.9Mm Indoor':336,'Painel Led Ph3.9Mm Outdoor':256,'Painel Led Ph6Mm Indoor':160};
 function isPainel(n){return Object.keys(PX).some(function(k){return n&&n.includes(k);});}
@@ -763,12 +782,14 @@ async function fetchComLimite(itens,limite){
           if(!d.ok)continue;
           var dados=d.dados;
           var st=dados.aprovStatus||'rascunho';
+          
+          var nState = normalizarState(dados.state);
           var bruto=['som','video','luz','estrutura','servico','logistica'].reduce(function(tot,s){
-            if(!dados.state||!dados.state[s])return tot;
-            return tot+Object.values(dados.state[s].rows||{}).reduce(function(a,arr){
+            return tot+Object.values(nState[s].rows).reduce(function(a,arr){
               return a+arr.reduce(function(x,row){return x+(row.qty||0)*(row.val||0)*(row.diaria||1);},0);
             },0);
           },0);
+          
           return{driveId:item.id,nome:item.nome,modificado:item.modificado,st:st,valor:bruto*(1+IMP),form:dados.form||{},hist:dados.aprovHist||[],dados:dados};
         }catch(e){}
       }
@@ -925,7 +946,7 @@ async function abrirOrcDrive(idx,ev){
   document.getElementById('aprov-ov').classList.remove('open');
   isCarregando = true;
   var dados=orc.dados;
-  if(dados.state){SECS.forEach(function(s){if(dados.state[s]){state[s].ambientes=dados.state[s].ambientes||[{id:'default',nome:'Geral'}];state[s].ambAtiva=dados.state[s].ambAtiva||'default';state[s].rows=dados.state[s].rows||{default:[]};if(!state[s].rows[state[s].ambAtiva])state[s].rows[state[s].ambAtiva]=[];}});}
+  if(dados.state){ state = normalizarState(dados.state); }
   if(dados.form)setForm(dados.form);
   aprovStatus=dados.aprovStatus||'rascunho';
   aprovHist=dados.aprovHist||[];
@@ -1190,7 +1211,6 @@ async function driveListar(){
         el.innerHTML=lista.map(function(x){return '<div class="drive-item"><div class="di-nome">📄 '+x.nome+'</div><div class="di-data">'+x.modificado+'</div><button class="btn-dl" onclick="driveCarregar(\''+x.id+'\',\''+eh(x.nome)+'\')">📂 Abrir</button><button class="btn-ddel" onclick="driveDeletar(\''+x.id+'\',\''+eh(x.nome)+'\')" title="Excluir">🗑️</button></div>';}).join('');
     } else {
         if(!lista.length){ driveStatus('⚠️ Nenhum orçamento encontrado para "'+q+'"', 'err'); return; }
-        // Carrega automaticamente o primeiro encontrado sem mostrar a lista
         driveCarregar(lista[0].id, lista[0].nome);
     }
   }catch(e){
@@ -1209,10 +1229,10 @@ async function driveSalvar(){
     driveIdAtual=d.id;driveNumAtual=num;
     driveStatus('✅ Salvo: '+d.nome,'ok');
     
-    // Atualiza a lista caso ela esteja sendo exibida
     if (document.getElementById('drive-list').style.display === 'block') { driveListar(); }
   }catch(e){driveStatus('Erro: '+e.message,'err');}
 }
+
 async function driveCarregar(id,nome){
   if(!confirm('Carregar "'+nome+'"?\nDados não salvos serão perdidos.'))return;
   driveStatus('⏳ Carregando...','');
@@ -1221,15 +1241,18 @@ async function driveCarregar(id,nome){
     var r=await fetch(SCRIPT_URL+'?action=load&id='+id);
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
     var dados=d.dados;
-    if(dados.state){SECS.forEach(function(s){if(dados.state[s]){state[s].ambientes=dados.state[s].ambientes||[{id:'default',nome:'Geral'}];state[s].ambAtiva=dados.state[s].ambAtiva||'default';state[s].rows=dados.state[s].rows||{default:[]};if(!state[s].rows[state[s].ambAtiva])state[s].rows[state[s].ambAtiva]=[];}});}
-    if(dados.form)setForm(dados.form);
+    
+    if(dados.state) { state = normalizarState(dados.state); }
+    if(dados.form) setForm(dados.form);
     aprovStatus=dados.aprovStatus||'rascunho';aprovHist=dados.aprovHist||[];
     driveIdAtual=id;driveNumAtual=dados.form&&dados.form['f-num']?dados.form['f-num']:null;
+    
     buildTabs();calc();renderStatusOrc();
     driveStatus('✅ Carregado: '+nome,'ok');
   }catch(e){driveStatus('Erro: '+e.message,'err');}
   isCarregando = false;
 }
+
 async function driveDeletar(id,nome){
   if(!confirm('Excluir "'+nome+'"?'))return;
   driveStatus('⏳ Excluindo...','');
@@ -1241,7 +1264,9 @@ async function driveDeletar(id,nome){
 var FORM_IDS=['f-num','f-data','f-val','f-cons','f-cliente','f-doc','f-tel','f-cep','f-end','f-endnum','f-bairro','f-cidade','f-local','f-tipo','f-resp','f-cep-ev','f-end-ev','f-num-ev','f-bairro-ev','f-cid-ev','f-dia','f-sem','f-dia-fim','f-sem-fim','f-hi','f-hf','f-dm','f-hm','f-dd','f-hd','f-pub','f-obs','f-pgto','f-svinc','desc-pct','desc-rs','val-liq'];
 function getForm(){var o={};FORM_IDS.forEach(function(id){var e=document.getElementById(id);if(e)o[id]=e.value;});return o;}
 function setForm(f){Object.keys(f).forEach(function(id){var e=document.getElementById(id);if(e)e.value=f[id];});sv('orc-disp',f['f-num']||'—');}
+
 function salvar(){var blob=new Blob([JSON.stringify({form:getForm(),state:state,aprovStatus:aprovStatus,aprovHist:aprovHist},null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(gv('f-num')||'orc')+' - '+(gv('f-cliente')||'cliente')+'.json';a.click();URL.revokeObjectURL(a.href);}
+
 function carregar(input){
   var file=input.files[0];if(!file)return;
   var fr=new FileReader();
@@ -1249,8 +1274,8 @@ function carregar(input){
     isCarregando = true;
     try{
       var data=JSON.parse(e.target.result);
-      if(data.state){SECS.forEach(function(s){if(data.state[s]){state[s].ambientes=data.state[s].ambientes||[{id:'default',nome:'Geral'}];state[s].ambAtiva=data.state[s].ambAtiva||'default';state[s].rows=data.state[s].rows||{default:[]};if(!state[s].rows[state[s].ambAtiva])state[s].rows[state[s].ambAtiva]=[];}});}
-      if(data.form)setForm(data.form);
+      if(data.state){ state = normalizarState(data.state); }
+      if(data.form) setForm(data.form);
       aprovStatus=data.aprovStatus||'rascunho';aprovHist=data.aprovHist||[];
       buildTabs();calc();renderStatusOrc();alert('✅ Carregado!');
     }catch(err){alert('⚠️ Arquivo inválido: '+err.message);}
@@ -1258,10 +1283,11 @@ function carregar(input){
   };
   fr.readAsText(file);input.value='';
 }
+
 function limpar(){
   if(!confirm('Limpar todos os dados?'))return;
   isCarregando = true;
-  SECS.forEach(function(s){state[s]={ambientes:[{id:'default',nome:'Geral'}],ambAtiva:'default',rows:{default:[]}};});
+  state = normalizarState(null);
   FORM_IDS.filter(function(id){return ['desc-pct','desc-rs','val-liq','f-pgto','f-svinc'].indexOf(id)<0;}).forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('f-cons').value='';
   document.getElementById('desc-pct').value=0;document.getElementById('desc-rs').value=0;document.getElementById('val-liq').value='';
