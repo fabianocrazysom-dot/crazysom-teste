@@ -134,9 +134,14 @@ table.it input,table.it select{padding:2px 5px;font-size:11px}
 .hist-acao{font-weight:700;color:#ddd;font-size:11px}
 .hist-det{color:#666;font-size:10px}
 .acao-wrap{margin-top:12px;padding-top:12px;border-top:1px solid #1a1a1a}
-.acao-obs{width:100%;padding:7px 10px;border:1px solid #333;border-radius:4px;font-size:11px;resize:none;height:40px;background:#111;color:#ddd;margin-bottom:8px}
+.acao-obs{width:100%;padding:7px 10px;border:1px solid #333;border-radius:4px;font-size:11px;resize:vertical;height:60px;background:#1c1c1c;color:#ddd;margin-bottom:8px}
 .acao-btns{display:flex;flex-wrap:wrap;gap:7px}
 .acao-btn{padding:8px 15px;border:none;border-radius:5px;cursor:pointer;font-size:11px;font-weight:700;color:#fff}
+/* BOTÕES DE APROVAÇÃO NO TOTBOX */
+.aprov-inline{background:#0a0a0a;border:1px solid #222;border-radius:8px;padding:14px 16px;margin-top:11px}
+.aprov-inline h4{color:#aaa;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.aprov-inline textarea{width:100%;padding:8px 10px;border:1px solid #333;border-radius:4px;font-size:12px;resize:vertical;min-height:52px;background:#1c1c1c;color:#ddd;margin-bottom:10px;display:block}
+.aprov-inline .btns{display:flex;flex-wrap:wrap;gap:8px}
 /* ADM */
 .adm-row{display:flex;align-items:center;gap:6px;padding:10px 12px;background:#111;border-radius:6px;margin-bottom:8px;flex-wrap:wrap}
 .adm-info{min-width:110px}
@@ -146,17 +151,20 @@ table.it input,table.it select{padding:2px 5px;font-size:11px}
 .adm-sel{padding:5px 8px;background:#1c1c1c;border:1px solid #333;border-radius:4px;color:#fff;font-size:11px}
 .adm-save{padding:5px 10px;background:var(--R);color:#fff;border:none;border-radius:4px;font-size:10px;cursor:pointer;font-weight:700}
 .adm-del{padding:5px 8px;background:#c62828;color:#fff;border:none;border-radius:4px;font-size:10px;cursor:pointer;font-weight:700}
-/* DRIVE Oculto/Adaptado */
-.drive-list{max-height:240px;overflow-y:auto;border:1px solid #333;border-radius:4px;background:#111;margin-top:10px}
-.drive-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #222;font-size:11px}
-.drive-item:hover{background:#1a1a1a}
-.di-nome{flex:1;font-weight:600;color:#fff}
-.di-data{color:#888;font-size:10px;white-space:nowrap}
+/* DRIVE */
+.drive-panel{background:#fff;padding:15px 18px;border-bottom:1px solid #eee}
+.drive-search{display:flex;gap:8px;margin-bottom:10px;align-items:center}
+.drive-search input{flex:1;padding:7px 10px;border:1px solid #ccc;border-radius:4px;font-size:12px}
+.drive-list{max-height:240px;overflow-y:auto;border:1px solid #eee;border-radius:4px}
+.drive-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #f5f5f5;font-size:11px}
+.drive-item:hover{background:#fff8f8}
+.di-nome{flex:1;font-weight:600;color:#222}
+.di-data{color:#999;font-size:10px;white-space:nowrap}
 .btn-dl{background:#1565c0;color:#fff;border:none;border-radius:3px;padding:3px 8px;font-size:10px;cursor:pointer;font-weight:700}
 .btn-ddel{background:#e53935;color:#fff;border:none;border-radius:3px;padding:3px 6px;font-size:10px;cursor:pointer}
 .drive-status{font-size:10px;margin-top:5px;min-height:14px}
-.drive-status.ok{color:#4caf50}
-.drive-status.err{color:#ff5555}
+.drive-status.ok{color:#2e7d32}
+.drive-status.err{color:#c0001a}
 /* PDF */
 .pov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;overflow-y:auto;padding:18px;flex-direction:column;align-items:center;gap:11px}
 .pov.open{display:flex}
@@ -210,6 +218,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
 <body>
 <div class="wrap">
 
+<!-- LOGIN -->
 <div class="login-ov" id="login-ov">
   <div class="login-box">
     <h2>🎛️ Crazy Som</h2>
@@ -221,6 +230,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
+<!-- MODAL APROVAÇÕES -->
 <div class="ov" id="aprov-ov">
   <div class="modal-box">
     <h2>📋 Aprovações</h2>
@@ -234,6 +244,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
+<!-- MODAL ADM -->
 <div class="ov" id="adm-ov">
   <div class="modal-box">
     <h2>⚙️ Gerenciar Usuários</h2>
@@ -246,6 +257,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
+<!-- MODAL PDF -->
 <div class="ov" id="tipo-modal">
   <div class="modal-box" style="max-width:430px;text-align:center">
     <h2>Gerar PDF</h2>
@@ -275,6 +287,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   <div id="pdf-content"></div>
 </div>
 
+<!-- HEADER -->
 <div class="app-hdr">
   <div><h1>CRAZY SOM – ORÇAMENTO</h1><p>Audiovisual e Estrutura – Uso Interno</p></div>
   <div class="orc-n"><small>Nº Orçamento</small><b id="orc-disp">—</b></div>
@@ -286,82 +299,100 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
+<!-- IDENTIFICAÇÃO -->
 <div class="card">
   <div class="st">📋 Identificação</div>
   <div class="g4">
-    <div><label>Nº do Orçamento</label><input id="f-num" placeholder="20260042" oninput="document.getElementById('orc-disp').textContent=this.value||'—'"></div>
-    <div><label>Data</label><input type="date" id="f-data"></div>
-    <div><label>Validade</label><input type="date" id="f-val"></div>
+    <div><label>Nº do Orçamento</label><input id="f-num" placeholder="20260042" oninput="document.getElementById('orc-disp').textContent=this.value||'—';marcarAlterado()"></div>
+    <div><label>Data</label><input type="date" id="f-data" oninput="marcarAlterado()"></div>
+    <div><label>Validade</label><input type="date" id="f-val" oninput="marcarAlterado()"></div>
     <div><label>Consultor</label>
-      <select id="f-cons"><option value="">Selecione...</option><option>Fabiano Santos</option><option>Giovana Borges</option><option>Jéssica Elisandra</option><option>Rafael Oliveira</option><option>Jefferson</option><option>Wagner Wolff</option></select>
+      <select id="f-cons" onchange="marcarAlterado()"><option value="">Selecione...</option><option>Fabiano Santos</option><option>Giovana Borges</option><option>Jéssica Elisandra</option><option>Rafael Oliveira</option><option>Jefferson</option><option>Wagner Wolff</option></select>
     </div>
   </div>
 </div>
 
+<!-- CLIENTE -->
 <div class="card">
   <div class="st">👤 Dados do Cliente</div>
   <div class="g3">
-    <div><label>Nome / Razão Social</label><input id="f-cliente" placeholder="Nome ou Razão Social"></div>
-    <div><label>CNPJ / CPF</label><div class="irow"><input id="f-doc" placeholder="00.000.000/0001-00" oninput="fmtDoc(this)"><button class="btn btn-o btn-sm" onclick="buscaCNPJ()">🔍</button></div><div class="hint" id="doc-st"></div></div>
-    <div><label>Contato / Telefone</label><input id="f-tel" placeholder="Nome – (51) 99999-9999"></div>
+    <div><label>Nome / Razão Social</label><input id="f-cliente" placeholder="Nome ou Razão Social" oninput="marcarAlterado()"></div>
+    <div><label>CNPJ / CPF</label><div class="irow"><input id="f-doc" placeholder="00.000.000/0001-00" oninput="fmtDoc(this);marcarAlterado()"><button class="btn btn-o btn-sm" onclick="buscaCNPJ()">🔍</button></div><div class="hint" id="doc-st"></div></div>
+    <div><label>Contato / Telefone</label><input id="f-tel" placeholder="Nome – (51) 99999-9999" oninput="marcarAlterado()"></div>
   </div>
   <div class="g4">
-    <div><label>CEP</label><div class="irow"><input id="f-cep" placeholder="00000-000" maxlength="9" oninput="fmtCep(this)"><button class="btn btn-o btn-sm" onclick="buscaCEP('f-cep','f-end','f-endnum','f-cidade','cep-st','f-bairro')">🔍</button></div><div class="hint" id="cep-st"></div></div>
-    <div><label>Logradouro</label><input id="f-end" placeholder="Rua, Av..."></div>
-    <div><label>Nº / Complemento</label><input id="f-endnum" placeholder="123 / Sala 1"></div>
-    <div><label>Bairro</label><input id="f-bairro" placeholder="Centro"></div>
-    <div><label>Cidade / UF</label><input id="f-cidade" placeholder="Porto Alegre / RS"></div>
+    <div><label>CEP</label><div class="irow"><input id="f-cep" placeholder="00000-000" maxlength="9" oninput="fmtCep(this);marcarAlterado()"><button class="btn btn-o btn-sm" onclick="buscaCEP('f-cep','f-end','f-endnum','f-cidade','cep-st','f-bairro')">🔍</button></div><div class="hint" id="cep-st"></div></div>
+    <div><label>Logradouro</label><input id="f-end" placeholder="Rua, Av..." oninput="marcarAlterado()"></div>
+    <div><label>Nº / Complemento</label><input id="f-endnum" placeholder="123 / Sala 1" oninput="marcarAlterado()"></div>
+    <div><label>Bairro</label><input id="f-bairro" placeholder="Centro" oninput="marcarAlterado()"></div>
+    <div><label>Cidade / UF</label><input id="f-cidade" placeholder="Porto Alegre / RS" oninput="marcarAlterado()"></div>
   </div>
 </div>
 
+<!-- LOCAL -->
 <div class="card">
   <div class="st">📍 Local do Evento</div>
   <div class="g3" style="margin-bottom:8px">
-    <div><label>Nome / Local</label><input id="f-local" placeholder="Hotel Serra Azul – Festa CVC"></div>
-    <div><label>Tipo de Evento</label><input id="f-tipo" placeholder="Festa, Congresso, Show..."></div>
-    <div><label>Resp. no Local / Tel.</label><input id="f-resp" placeholder="Nome – (51) 99999-9999"></div>
+    <div><label>Nome / Local</label><input id="f-local" placeholder="Hotel Serra Azul – Festa CVC" oninput="marcarAlterado()"></div>
+    <div><label>Tipo de Evento</label><input id="f-tipo" placeholder="Festa, Congresso, Show..." oninput="marcarAlterado()"></div>
+    <div><label>Resp. no Local / Tel.</label><input id="f-resp" placeholder="Nome – (51) 99999-9999" oninput="marcarAlterado()"></div>
   </div>
   <div class="g4">
-    <div><label>CEP do Evento</label><div class="irow"><input id="f-cep-ev" placeholder="00000-000" maxlength="9" oninput="fmtCep(this)"><button class="btn btn-o btn-sm" onclick="buscaCEP('f-cep-ev','f-end-ev','f-num-ev','f-cid-ev','cep-ev-st','f-bairro-ev')">🔍</button></div><div class="hint" id="cep-ev-st"></div></div>
-    <div><label>Logradouro</label><input id="f-end-ev" placeholder="Rua, Av..."></div>
-    <div><label>Nº / Complemento</label><input id="f-num-ev" placeholder="123"></div>
-    <div><label>Bairro</label><input id="f-bairro-ev" placeholder="Centro"></div>
-    <div><label>Cidade / UF</label><input id="f-cid-ev" placeholder="Porto Alegre / RS"></div>
+    <div><label>CEP do Evento</label><div class="irow"><input id="f-cep-ev" placeholder="00000-000" maxlength="9" oninput="fmtCep(this);marcarAlterado()"><button class="btn btn-o btn-sm" onclick="buscaCEP('f-cep-ev','f-end-ev','f-num-ev','f-cid-ev','cep-ev-st','f-bairro-ev')">🔍</button></div><div class="hint" id="cep-ev-st"></div></div>
+    <div><label>Logradouro</label><input id="f-end-ev" placeholder="Rua, Av..." oninput="marcarAlterado()"></div>
+    <div><label>Nº / Complemento</label><input id="f-num-ev" placeholder="123" oninput="marcarAlterado()"></div>
+    <div><label>Bairro</label><input id="f-bairro-ev" placeholder="Centro" oninput="marcarAlterado()"></div>
+    <div><label>Cidade / UF</label><input id="f-cid-ev" placeholder="Porto Alegre / RS" oninput="marcarAlterado()"></div>
   </div>
 </div>
 
+<!-- DATAS -->
 <div class="card">
   <div class="st">🗓️ Datas e Horários</div>
   <div class="g4" style="margin-bottom:8px">
-    <div><label>Início do Evento</label><input type="date" id="f-dia" oninput="setDS()"></div>
+    <div><label>Início do Evento</label><input type="date" id="f-dia" oninput="setDS();marcarAlterado()"></div>
     <div><label>Dia da Semana</label><input id="f-sem" readonly placeholder="Auto"></div>
-    <div><label>Fim do Evento</label><input type="date" id="f-dia-fim" oninput="setDSFim();calcDiariasAuto()"></div>
+    <div><label>Fim do Evento</label><input type="date" id="f-dia-fim" oninput="setDSFim();calcDiariasAuto();marcarAlterado()"></div>
     <div><label>Dia da Semana (fim)</label><input id="f-sem-fim" readonly placeholder="Auto"></div>
   </div>
   <div class="g4" style="margin-bottom:8px">
-    <div><label>Horário Início</label><input type="time" id="f-hi"></div>
-    <div><label>Horário Encerramento</label><input type="time" id="f-hf"></div>
+    <div><label>Horário Início</label><input type="time" id="f-hi" oninput="marcarAlterado()"></div>
+    <div><label>Horário Encerramento</label><input type="time" id="f-hf" oninput="marcarAlterado()"></div>
     <div><label>Dias do Evento</label><input id="f-dias-ev" readonly style="background:#fffde7;border-color:#ffe082;font-weight:700"></div>
     <div><label>Diárias Equip. (½)</label><input id="f-diarias-equip" readonly style="background:#e8f4fd;border-color:#90caf9;font-weight:700;color:#1565c0"></div>
   </div>
   <div class="g4" style="margin-bottom:8px">
-    <div><label>Data Montagem</label><input type="date" id="f-dm"></div>
-    <div><label>Hora Montagem</label><input type="time" id="f-hm"></div>
-    <div><label>Data Desmontagem</label><input type="date" id="f-dd"></div>
-    <div><label>Hora Desmontagem</label><input type="time" id="f-hd"></div>
+    <div><label>Data Montagem</label><input type="date" id="f-dm" oninput="marcarAlterado()"></div>
+    <div><label>Hora Montagem</label><input type="time" id="f-hm" oninput="marcarAlterado()"></div>
+    <div><label>Data Desmontagem</label><input type="date" id="f-dd" oninput="marcarAlterado()"></div>
+    <div><label>Hora Desmontagem</label><input type="time" id="f-hd" oninput="marcarAlterado()"></div>
   </div>
   <div class="g3">
-    <div><label>Público Estimado</label><input type="number" id="f-pub" placeholder="500"></div>
-    <div style="grid-column:span 2"><label>Observações Gerais</label><textarea id="f-obs" style="background:#fffde7;border-color:#ffe082;min-height:36px" placeholder="Detalhes, restrições..."></textarea></div>
+    <div><label>Público Estimado</label><input type="number" id="f-pub" placeholder="500" oninput="marcarAlterado()"></div>
+    <div style="grid-column:span 2"><label>Observações Gerais</label><textarea id="f-obs" style="background:#fffde7;border-color:#ffe082;min-height:52px" placeholder="Detalhes, restrições, motivo de revisão..." oninput="marcarAlterado()"></textarea></div>
   </div>
 </div>
 
+<!-- DRIVE -->
+<div class="drive-panel">
+  <div class="st" style="margin:-15px -18px 11px">☁️ Orçamentos – Google Drive</div>
+  <div class="drive-search">
+    <input id="drive-q" placeholder="🔍 Buscar por número, cliente ou data...">
+    <button class="btn btn-b btn-sm" onclick="driveListar()">🔍 Localizar</button>
+    <button class="btn btn-g btn-sm" onclick="driveSalvar()">☁️ Salvar no Drive</button>
+  </div>
+  <div id="drive-list" class="drive-list" style="display:none"></div>
+  <div id="drive-status" class="drive-status"></div>
+</div>
+
+<!-- ITENS -->
 <div class="card">
   <div class="st">🎛️ Itens do Orçamento</div>
   <div class="tabs" id="tabs-wrap"></div>
   <div id="panes-wrap"></div>
 </div>
 
+<!-- STATUS -->
 <div class="card" id="status-orc-card">
   <div class="st">✅ Status deste Orçamento</div>
   <div id="status-orc-bar"></div>
@@ -372,6 +403,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
+<!-- TOTAIS -->
 <div class="totbox">
   <div style="font-size:10px;color:#aaa;margin-bottom:9px;text-transform:uppercase;letter-spacing:1px">📊 Resumo & Margem</div>
   <div class="tg3">
@@ -385,7 +417,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   <div class="sep">
     <div id="subtot-geral-ambientes" style="display:none;background:#0a0a0a;border:1px solid #222;border-radius:6px;padding:11px 14px;margin-bottom:10px"></div>
     <div class="tg3">
-      <div class="ti"><label>Total sem Imposto</label><span class="tval" id="r-bruto">R$ 0,00</span></div>
+      <div class="ti"><label>Total Bruto</label><span class="tval" id="r-bruto">R$ 0,00</span></div>
       <div class="ti"><label>Impostos (13,5%)</label><span class="tval red" id="r-imp">R$ 0,00</span></div>
       <div class="ti"><label>Total c/ Impostos</label><span class="tval" id="r-cimp">R$ 0,00</span></div>
     </div>
@@ -393,8 +425,8 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   <div class="sep">
     <div class="tg2" style="margin-bottom:10px">
       <div>
-        <div class="drow"><label>Desconto %</label><input type="number" id="desc-pct" value="0" min="0" max="100" step="0.5" oninput="syncDesc('pct')"><span style="color:#aaa;font-size:10px">= <span id="r-dv" style="color:#ff6060">R$ 0,00</span></span></div>
-        <div class="drow"><label>Desconto R$</label><input type="number" id="desc-rs" value="0" min="0" step="1" oninput="syncDesc('rs')"></div>
+        <div class="drow"><label>Desconto %</label><input type="number" id="desc-pct" value="0" min="0" max="100" step="0.5" oninput="syncDesc('pct');marcarAlterado()"><span style="color:#aaa;font-size:10px">= <span id="r-dv" style="color:#ff6060">R$ 0,00</span></span></div>
+        <div class="drow"><label>Desconto R$</label><input type="number" id="desc-rs" value="0" min="0" step="1" oninput="syncDesc('rs');marcarAlterado()"></div>
       </div>
       <div class="tg2" style="gap:8px;margin:0">
         <div class="ti"><label>c/Desc s/imp</label><span class="tval" id="r-vdsi">R$ 0,00</span></div>
@@ -412,13 +444,13 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   <div class="sep" style="margin-top:11px">
     <label style="color:#888">Valor Líquido Final (PDF)</label>
     <div style="display:flex;gap:8px;align-items:center;margin-top:5px">
-      <input type="number" id="val-liq" placeholder="0,00" step="1" style="max-width:175px;background:#1c1c1c;color:#fff;border-color:#3a3a3a;font-size:14px;font-weight:700;padding:6px 9px" oninput="calc()">
+      <input type="number" id="val-liq" placeholder="0,00" step="1" style="max-width:175px;background:#1c1c1c;color:#fff;border-color:#3a3a3a;font-size:14px;font-weight:700;padding:6px 9px" oninput="calc();marcarAlterado()">
       <span style="color:#555;font-size:10px">← deixe vazio para usar o valor calculado</span>
     </div>
   </div>
   <div style="margin:11px 0 0">
     <label style="color:#888">Forma de Pagamento</label>
-    <textarea id="f-pgto" style="background:#1c1c1c;color:#ddd;border-color:#333;margin-top:4px">50% na contratação;
+    <textarea id="f-pgto" style="background:#1c1c1c;color:#ddd;border-color:#333;margin-top:4px" oninput="marcarAlterado()">50% na contratação;
 50% até 03 dias antes da montagem.</textarea>
   </div>
   <div class="grand">
@@ -426,21 +458,15 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
     <b id="r-total">R$ 0,00</b>
   </div>
 
-  <div id="status-orc-acoes-bottom" style="display:none;background:#1c1c1c;border:1px solid #333;border-radius:6px;padding:11px 14px;margin-top:9px"></div>
-
-  <div class="mbox" style="margin-top:12px; border-color:#333;">
-    <h3 style="color:#aaa; font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:7px">☁️ Orçamentos – Google Drive</h3>
-    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
-      <input id="drive-q" placeholder="🔍 Buscar por número ou cliente (deixe vazio para listar todos)..." style="flex:1; padding:7px 10px; border:1px solid #333; border-radius:4px; font-size:12px; background:#1c1c1c; color:#fff">
-      <button class="btn btn-b btn-sm" style="padding:6px 12px" onclick="driveListar()">🔍 Localizar</button>
-      <button class="btn btn-g btn-sm" style="padding:6px 12px" onclick="driveSalvar()">☁️ Salvar no Drive</button>
-    </div>
-    <div id="drive-list" class="drive-list" style="display:none"></div>
-    <div id="drive-status" class="drive-status" style="margin-top:8px"></div>
+  <!-- BOTÕES DE APROVAÇÃO INLINE -->
+  <div class="aprov-inline" id="aprov-inline-box" style="display:none">
+    <h4>⚡ Ação de Aprovação</h4>
+    <textarea id="aprov-inline-obs" class="acao-obs" placeholder="Observação / Motivo (ex: motivo de revisão ou aprovação)..."></textarea>
+    <div class="btns" id="aprov-inline-btns"></div>
   </div>
 
   <div class="sbar">
-    <span>💾 Salvar / Carregar</span>
+    <span>💾 Orçamento</span>
     <button class="btn btn-g btn-sm" onclick="salvar()">💾 Salvar local</button>
     <label class="btn btn-b btn-sm" style="cursor:pointer">📂 Carregar<input type="file" accept=".json" style="display:none" onchange="carregar(this)"></label>
     <button class="btn btn-d btn-sm" onclick="gerarOS()">📋 OS</button>
@@ -453,7 +479,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
 </div>
 
 <script>
-var isCarregando=false;
 var IMP=0.135;
 var SECS=['som','video','luz','estrutura','servico','logistica','extra'];
 var SEC_LBL={som:'Sonorização',video:'Vídeo',luz:'Iluminação',estrutura:'Estrutura',servico:'Serviço',logistica:'Logística',extra:'Custos Extra'};
@@ -493,30 +518,13 @@ var APROVADOS_POR_PAG=10;
 var _listaAprov=[];
 var tipoAtual='det';
 var impAtual='cimp';
+// Controle de alterações em orçamentos aprovados
+var _carregandoOrc=false;
 
 function hs(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h=h|0;}return String(h);}
 
-// Migração e Normalização de orçamentos antigos
-function normalizarState(ds) {
-  var ns = {};
-  SECS.forEach(function(s){
-    ns[s] = { ambientes:[{id:'default',nome:'Geral'}], ambAtiva:'default', rows:{default:[]} };
-    if (ds && ds[s]) {
-      if (Array.isArray(ds[s])) {
-        // Orçamento da versão antiga (antes de existir múltiplos ambientes)
-        ns[s].rows = { 'default': ds[s] };
-      } else {
-        ns[s].ambientes = ds[s].ambientes || [{id:'default',nome:'Geral'}];
-        ns[s].ambAtiva = ds[s].ambAtiva || 'default';
-        ns[s].rows = ds[s].rows || { 'default': [] };
-      }
-      if(!ns[s].rows[ns[s].ambAtiva]) ns[s].rows[ns[s].ambAtiva] = [];
-    }
-  });
-  return ns;
-}
-
-var state = normalizarState(null);
+var state={};
+SECS.forEach(function(s){state[s]={ambientes:[{id:'default',nome:'Geral'}],ambAtiva:'default',rows:{default:[]}};});
 
 var PX={'Painel Led Ph2.5Mm Indoor':384,'Painel Led Ph2.9Mm Indoor':336,'Painel Led Ph3.9Mm Outdoor':256,'Painel Led Ph6Mm Indoor':160};
 function isPainel(n){return Object.keys(PX).some(function(k){return n&&n.includes(k);});}
@@ -538,13 +546,21 @@ function safe(v){return (isNaN(v)||!isFinite(v))?0:v;}
 function fmtCep(el){var v=el.value.replace(/\D/g,'').slice(0,8);if(v.length>5)v=v.slice(0,5)+'-'+v.slice(5);el.value=v;}
 function fmtDoc(el){var v=el.value.replace(/\D/g,'');if(v.length<=11){if(v.length>9)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6,9)+'-'+v.slice(9);else if(v.length>6)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6);else if(v.length>3)v=v.slice(0,3)+'.'+v.slice(3);}else{v=v.slice(0,14);if(v.length>12)v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8,12)+'-'+v.slice(12);else if(v.length>8)v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8);else if(v.length>5)v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5);else if(v.length>2)v=v.slice(0,2)+'.'+v.slice(2);}el.value=v;}
 
-// MARK EDITED
-function markEdited() {
-  if (isCarregando || !usuarioAtual) return;
-  if (aprovStatus !== 'rascunho') {
-    aprovHist.push({ico:'✏️', acao:'Edição Pós-Aprovação', usuario:usuarioAtual.nome, cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel, data:new Date().toLocaleString('pt-BR'), obs:'Status retornado para Rascunho devido a alterações no orçamento.'});
-    aprovStatus = 'rascunho';
+// ---- CONTROLE DE ALTERAÇÕES EM ORC APROVADO ----
+function marcarAlterado(){
+  if(_carregandoOrc)return;
+  if(aprovStatus==='aprovado'){
+    aprovHist.push({
+      ico:'⚠️',
+      acao:'Aprovação anulada por alteração',
+      usuario:usuarioAtual?usuarioAtual.nome:'Sistema',
+      cargo:usuarioAtual?(NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel):'',
+      data:new Date().toLocaleString('pt-BR'),
+      obs:'Orçamento editado após aprovação. Necessita nova aprovação.'
+    });
+    aprovStatus='analise';
     renderStatusOrc();
+    renderAprovInline();
   }
 }
 
@@ -616,7 +632,18 @@ function calcDiariasAuto(){
   calc();
 }
 
-// LOGIN E LOGOUT
+// PREÇOS
+var PRECOS={
+  som:[{n:"Amplificador De Potência Até 5K",v:100},{n:"Caixa Ativa (Selenium/JBL/Lexsen/Staner)",v:100},{n:"Caixa Ativa Jbl Eon515xt",v:120},{n:"Caixa Ativa Jbl Eon612",v:120},{n:"Caixa Ativa Jbl Max 10",v:100},{n:"Caixa Ativa Jbl Max 10 (monitor)",v:100},{n:'Caixa Sub Grave T18 1X18" Passiva 800W',v:80},{n:'Caixa Sub Grave Taigar 2X18" 2400W',v:150},{n:'Caixa Line Array Taigar 2X8" 740W',v:100},{n:"Caixa Line Slim Turbosound Ip500",v:250},{n:"Caixa Line Slim Soundking ARTOS 1200",v:250},{n:"Caixa Line Slim Blg 1515A",v:300},{n:"Caixa Line Slim Taigar V851",v:500},{n:"Caixa Passiva Leacs 100W",v:60},{n:"Caixa Treeway Passiva 450W",v:80},{n:"Caixas Monitor Attack (Retorno)",v:100},{n:"Cubo de Baixo",v:150},{n:"Cubo de Guitarra",v:100},{n:"Direct Box Ativo Ou Passivo",v:30},{n:"Kit Dj 02 Cdj 350 Pioneer + Mixer",v:200},{n:"Kit Microfonação de bateria",v:120},{n:"Kit Pioneer 02 CDJ 2000 Nexus 2 + Mixer DJM 900",v:800},{n:"Mesa Som Analógica 04 Canais",v:100},{n:"Mesa Som Analógica 06 Canais",v:100},{n:"Mesa Som Analógica Behringer/Yamaha 12 Canais",v:100},{n:"Mesa Som Digital Midas M32 32 Canais",v:400},{n:"Mesa Som Digital Soundcraft Ui24 24 Canais",v:250},{n:"Mesa Som Digital Yamaha 01V 16 Canais",v:200},{n:"Mesa Som Digital Duonn Atrium 12 Canais",v:200},{n:"Microfone Com Fio Akg/Samson/Sennheiser",v:30},{n:"Microfone Com Fio Shure Sm58",v:60},{n:"Microfone Goosneck (pulpito)",v:100},{n:"Microfone Sem Fio Bastão Sennheiser",v:120},{n:"Microfone Sem Fio Headset Sennheiser",v:120},{n:"Microfone Sem Fio Bastão Shure",v:120},{n:"Microfone Sem Fio Bastão Kadosh",v:100},{n:"Antena longo alcance Combainer",v:150},{n:"Notebook Para Trilhas",v:120},{n:"Pedestal De Microfone",v:30},{n:"Power Play (sem fones)",v:100},{n:"Rack De Amplificação E Processamento",v:300}],
+  video:[{n:"Base plataforma de abrir",v:300},{n:"Cpu Servidor De Vídeo",v:350},{n:"Estrutura P30 Até 10M² De Painel",v:250},{n:"Estrutura P30 Até 10M² Outdoor",v:500},{n:"Estrutura P30 Até 24M² De Painel",v:500},{n:"Notebook Placa De Vídeo Dedicado",v:150},{n:"Painel Led Ph2.5Mm Indoor",v:300},{n:"Painel Led Ph2.9Mm Indoor",v:250},{n:"Painel Led Ph3.9Mm Outdoor",v:250},{n:"Painel Led Ph6Mm Indoor",v:150},{n:"Passador de slides",v:50},{n:"Poster Led 1,00x2,00M P2.5mm",v:1200},{n:"Poster Led 1,00x3,00M P2.5mm",v:1800},{n:"Processadora De Vídeo",v:300},{n:"Processadora TB 40",v:300},{n:"Projetor 2.700 Lumens",v:120},{n:"Projetor 3.500 Lumens",v:150},{n:"Tela de projeção e pedestal",v:100},{n:'Totem Touch 32" Armário',v:1300},{n:'Totem Touch 32" Curvo',v:1200},{n:'Totem Touch 40" Armário',v:1500},{n:'Totem Touch 55" Armário',v:1700},{n:'Totem Touch 70" Armário',v:1900},{n:"Diaria adicional Totem",v:200},{n:"Adesivação Totem",v:300},{n:"Pedestal suporte TV",v:30},{n:'Tv 32"',v:120},{n:'Tv 40"/43"',v:150},{n:'Tv 55"',v:300},{n:'Tv 70"',v:500},{n:'Tv 98"',v:1000},{n:'Tv 32" doghouse + notebook cronometro',v:250},{n:'Tv 40" doghouse + notebook cronometro',v:300},{n:'Tv 32" doghouse + Spliter HDMI retorno',v:250},{n:'Tv 40" doghouse + Spliter HDMI retorno',v:300},{n:"Webcam Logitech C920",v:100}],
+  luz:[{n:"Canhão Led 3W Rgb",v:30},{n:"Canhão Led 5W Rgbwa",v:35},{n:"Cabeamento / elétrica",v:100},{n:"Cabo trifasico com granada",v:100},{n:"Main Power",v:100},{n:"Elipisoidal Led",v:80},{n:"Fresnel Cob 200 Led",v:60},{n:"Máquina De Fumaça",v:100},{n:"Máquina De Fumaça Haze",v:150},{n:"Mesa Controladora Dmx",v:50},{n:"Mesa Grand M.A.2",v:350},{n:"Mini Brut",v:50},{n:"Moving Head Beam 200 5R",v:125},{n:"Moving Head Beam 9R",v:150},{n:"Moving Head Wash",v:150},{n:"Refletor HQI",v:50},{n:"Refletor LED branco 100w",v:30},{n:"Ribalta Led Rgb",v:75},{n:"Sistema Gerenciamento Lumikit",v:150},{n:"Spliter DMX",v:50},{n:"Strobo LED RGB",v:50},{n:"Varal De Luz 15M",v:80},{n:"Varal De Luz 30M",v:150}],
+  estrutura:[{n:"Palco",v:0},{n:"Backdrop 2Mx2M Boxtruss P15",v:280},{n:"Backdrop 3Mx2M Boxtruss P15",v:320},{n:"Backdrop 3Mx3M Boxtruss P15",v:360},{n:"Backdrop 4Mx2M Boxtruss P15",v:360},{n:"Backdrop 5Mx3M Boxtruss P15",v:440},{n:"Alumalock",v:50},{n:"Boxtruss Treliça P15 (M)",v:20},{n:"Boxtruss Treliça P30 (M)",v:25},{n:"Boxtruss Treliça Q30 (M)",v:20},{n:"Cubo P15",v:20},{n:"Cubo P30",v:25},{n:"Cubo Q30",v:20},{n:"Escada Palco Até 60Cm",v:60},{n:"Escada Palco 60 A 100Cm",v:100},{n:"Grade de contenção 2,00x1,00M",v:20},{n:"Guarda corpo 2,00x1,00m",v:20},{n:"Praticavel 2x1 20/30/40Cm",v:100},{n:"Praticavel 2x1 60 A 100Cm",v:100},{n:"Carpete Semi-Novo (M²)",v:25},{n:"Carpete Novo (M²)",v:40},{n:"Púlpito de acrílico",v:250},{n:"Sleeve block",v:50},{n:"Talha",v:50},{n:"Torre Boxtruss 3M",v:80},{n:"Unifilas",v:40}],
+  servico:[{n:"Técnico de Vídeo",v:400},{n:"Técnico de Áudio",v:400},{n:"Técnico de Luz",v:400},{n:"Técnico Audiovisual",v:350},{n:"Auxiliar Técnico",v:300},{n:"Laudo Técnico + ART",v:750}],
+  logistica:[{n:"Montagem",v:200},{n:"Desmontagem",v:100},{n:"Hotel",v:0},{n:"Almoço/Janta",v:45},{n:"Frete",v:0},{n:"Combustível",v:0},{n:"Projeto",v:0},{n:"Pedágio",v:0},{n:"Carregadores",v:200}],
+  extra:[{n:"Locação equipamento externo",v:0},{n:"Fornecedor terceiro",v:0},{n:"Consumíveis",v:0},{n:"Manutenção",v:0},{n:"Outros custos",v:0}]
+};
+
+// LOGIN
 function doLogin(){
   var uid=(document.getElementById('l-user').value||'').trim().toLowerCase();
   var pwd=document.getElementById('l-pass').value||'';
@@ -635,6 +662,7 @@ function doLogin(){
   document.getElementById('user-cargo').textContent=NIVEIS[u.nivel]||u.nivel;
   document.getElementById('btn-adm').style.display=u.nivel==='adm'?'inline-block':'none';
   renderStatusOrc();
+  renderAprovInline();
 }
 function logout(){
   usuarioAtual=null;aprovStatus='rascunho';aprovHist=[];driveIdAtual=null;driveNumAtual=null;
@@ -643,6 +671,7 @@ function logout(){
   document.getElementById('l-user').value='';document.getElementById('l-pass').value='';
   document.getElementById('l-err').textContent='';
   renderStatusOrc();
+  renderAprovInline();
 }
 
 // STATUS DO ORÇAMENTO
@@ -658,7 +687,6 @@ function renderStatusOrc(){
   sb.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:6px;margin-bottom:10px;font-size:11px;font-weight:700;background:'+si.bg+';border:1px solid '+si.bd+';color:'+si.tx+'">'
     +'<div class="st-dot" style="background:'+si.dot+'"></div>'
     +'<span>'+si.label+'</span>'
-    +'<span style="margin-left:auto;font-size:10px;opacity:.7">Total c/imp: '+fmt(cImp)+'</span>'
     +'</div>';
   if(sh&&hl){
     if(aprovHist&&aprovHist.length){
@@ -677,7 +705,7 @@ function renderStatusOrc(){
   var nivel=usuarioAtual.nivel==='adm'?'consultor':usuarioAtual.nivel;
   var cImpV=cImp;
   var acoes='';
-  var obsHtml='<textarea id="aprov-obs" style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:4px;font-size:11px;resize:none;height:40px;margin-top:8px;background:#fff;color:#222" placeholder="Observação (opcional)..." onclick="event.stopPropagation()"></textarea>';
+  var obsHtml='<textarea id="aprov-obs" style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:4px;font-size:11px;resize:vertical;height:52px;margin-top:8px;background:#fff;color:#222" placeholder="Observação / Motivo (ex: motivo de revisão ou aprovação)..."></textarea>';
   function btn(cor,txt,fn){return '<button onclick="'+fn+'" style="padding:8px 15px;border:none;border-radius:5px;cursor:pointer;font-size:11px;font-weight:700;color:#fff;background:'+cor+';margin:3px">'+txt+'</button>';}
   if(nivel==='consultor'&&(aprovStatus==='rascunho'||aprovStatus==='revisao')){
     var txt2=aprovStatus==='rascunho'?'📤 Enviar para Análise Técnica':'📤 Reenviar para Análise Técnica';
@@ -696,34 +724,79 @@ function renderStatusOrc(){
     acoes='<p style="font-size:11px;color:#888;padding:6px 0">'+(msgs[aprovStatus]||'')+'</p>';
   }
   sa.innerHTML=acoes;
-
-  // Botões espelhados no final do formulário
-  var sb_bottom = document.getElementById('status-orc-acoes-bottom');
-  if (sb_bottom) {
-    if (acoes && acoes.includes('<button')) {
-      var acoesBot = acoes.replace('id="aprov-obs"', 'id="aprov-obs-bot"').replace(/aprovAcao\(/g, "aprovAcaoBot(");
-      sb_bottom.innerHTML = '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:8px;font-weight:700">Ações de Aprovação</div>' + acoesBot;
-      sb_bottom.style.display = 'block';
-    } else {
-      sb_bottom.style.display = 'none';
-    }
-  }
 }
 
-function aprovAcaoBot(novo) {
-  var obs=(document.getElementById('aprov-obs-bot')||{}).value||'';
-  _aprovAcao(novo, obs);
-}
 function aprovAcao(novo){
   var obs=(document.getElementById('aprov-obs')||{}).value||'';
-  _aprovAcao(novo, obs);
-}
-function _aprovAcao(novo, obs) {
   var icos={analise:'📤',gerencial:'📊',diretoria:'🏆',aprovado:'✅',revisao:'🔄'};
   var atos={analise:'Enviado p/ Análise Técnica',gerencial:'Encaminhado ao Gerente',diretoria:'Encaminhado à Diretoria',aprovado:'Aprovado',revisao:'Revisão Solicitada'};
   aprovHist.push({ico:icos[novo]||'•',acao:atos[novo]||novo,usuario:usuarioAtual.nome,cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel,data:new Date().toLocaleString('pt-BR'),obs:obs});
   aprovStatus=novo;
   renderStatusOrc();
+  renderAprovInline();
+  if(driveIdAtual){
+    var num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];
+    fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state:state,aprovStatus:aprovStatus,aprovHist:aprovHist}})}).catch(function(){});
+    driveStatus('⏳ Salvando status...','');
+  }
+}
+
+// APROVAÇÃO INLINE (abaixo do total)
+function renderAprovInline(){
+  var box=document.getElementById('aprov-inline-box');
+  var btnsEl=document.getElementById('aprov-inline-btns');
+  if(!box||!btnsEl)return;
+  if(!usuarioAtual){box.style.display='none';return;}
+
+  var nivel=usuarioAtual.nivel==='adm'?'consultor':usuarioAtual.nivel;
+  var cImp=0;
+  try{cImp=['som','video','luz','estrutura','servico','logistica'].reduce(function(t,s){return t+secTotAll(s);},0)*(1+IMP);}catch(e){}
+
+  function btn(cor,txt,st){
+    var b=document.createElement('button');
+    b.className='acao-btn';b.style.background=cor;b.textContent=txt;
+    b.onclick=function(){aprovAcaoInline(st);};
+    return b;
+  }
+
+  btnsEl.innerHTML='';
+  var mostrar=false;
+
+  if(nivel==='consultor'&&(aprovStatus==='rascunho'||aprovStatus==='revisao')){
+    mostrar=true;
+    btnsEl.appendChild(btn('#1565c0',aprovStatus==='rascunho'?'📤 Enviar para Análise Técnica':'📤 Reenviar para Análise Técnica','analise'));
+  }else if(nivel==='tecnico'&&aprovStatus==='analise'){
+    mostrar=true;
+    if(cImp<=LIMITE_TEC){btnsEl.appendChild(btn('#2e7d32','✅ Aprovar (até R$ 4.000)','aprovado'));}
+    else{btnsEl.appendChild(btn('#e65100','📊 Encaminhar ao Gerente','gerencial'));}
+    btnsEl.appendChild(btn('#c62828','🔄 Solicitar Revisão','revisao'));
+  }else if(nivel==='gerente'&&aprovStatus==='gerencial'){
+    mostrar=true;
+    btnsEl.appendChild(btn('#2e7d32','✅ Aprovar','aprovado'));
+    btnsEl.appendChild(btn('#6a1b9a','🏆 Encaminhar à Diretoria','diretoria'));
+    btnsEl.appendChild(btn('#c62828','🔄 Solicitar Revisão','revisao'));
+  }else if(nivel==='diretor'&&aprovStatus==='diretoria'){
+    mostrar=true;
+    btnsEl.appendChild(btn('#2e7d32','✅ Aprovar','aprovado'));
+    btnsEl.appendChild(btn('#c62828','🔄 Reprovar / Revisão','revisao'));
+  }else if(['adm','gerente','diretor'].includes(usuarioAtual.nivel)&&aprovStatus!=='aprovado'&&aprovStatus!=='rascunho'){
+    mostrar=true;
+    btnsEl.appendChild(btn('#2e7d32','✅ Aprovar','aprovado'));
+    btnsEl.appendChild(btn('#c62828','🔄 Solicitar Revisão','revisao'));
+  }
+
+  box.style.display=mostrar?'block':'none';
+}
+
+function aprovAcaoInline(novo){
+  var obs=(document.getElementById('aprov-inline-obs')||{}).value||'';
+  var icos={analise:'📤',gerencial:'📊',diretoria:'🏆',aprovado:'✅',revisao:'🔄'};
+  var atos={analise:'Enviado p/ Análise Técnica',gerencial:'Encaminhado ao Gerente',diretoria:'Encaminhado à Diretoria',aprovado:'Aprovado',revisao:'Revisão Solicitada'};
+  aprovHist.push({ico:icos[novo]||'•',acao:atos[novo]||novo,usuario:usuarioAtual.nome,cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel,data:new Date().toLocaleString('pt-BR'),obs:obs});
+  aprovStatus=novo;
+  document.getElementById('aprov-inline-obs').value='';
+  renderStatusOrc();
+  renderAprovInline();
   if(driveIdAtual){
     var num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];
     fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state:state,aprovStatus:aprovStatus,aprovHist:aprovHist}})}).catch(function(){});
@@ -782,15 +855,7 @@ async function fetchComLimite(itens,limite){
           if(!d.ok)continue;
           var dados=d.dados;
           var st=dados.aprovStatus||'rascunho';
-          
-          var nState = normalizarState(dados.state);
-          var bruto=['som','video','luz','estrutura','servico','logistica'].reduce(function(tot,s){
-            return tot+Object.values(nState[s].rows).reduce(function(a,arr){
-              return a+arr.reduce(function(x,row){return x+(row.qty||0)*(row.val||0)*(row.diaria||1);},0);
-            },0);
-          },0);
-          
-          return{driveId:item.id,nome:item.nome,modificado:item.modificado,st:st,valor:bruto*(1+IMP),form:dados.form||{},hist:dados.aprovHist||[],dados:dados};
+          return{driveId:item.id,nome:item.nome,modificado:item.modificado,st:st,form:dados.form||{},hist:dados.aprovHist||[],dados:dados};
         }catch(e){}
       }
       return null;
@@ -845,7 +910,6 @@ function carregarMaisAprovados(){
   var temMais=_aprovadosCache.length>fim;
   _aprovadosOffset=fim;
   var novos=_aprovadosCache.slice(inicio,fim).map(function(orc,i){return buildOrcCard(orc,inicio+i);}).join('');
-  var btnAntigo=lista.querySelector('[id="btn-mais"]');
   var rodape=lista.lastElementChild;
   if(rodape)rodape.remove();
   var div=document.createElement('div');div.innerHTML=novos;lista.appendChild(div);
@@ -894,7 +958,7 @@ function buildOrcCard(orc,idx){
     +'<div class="etapas">'+etapasHTML+'</div>'
     +'<div id="det-'+idx+'" class="aprov-detalhe">'
     +histHtml
-    +(temAcao?'<div class="acao-wrap"><textarea class="acao-obs" id="obs-'+idx+'" placeholder="Observação (opcional)..." onclick="event.stopPropagation()"></textarea><div class="acao-btns">'+botoesAcao+'</div></div>':'')
+    +(temAcao?'<div class="acao-wrap"><textarea class="acao-obs" id="obs-'+idx+'" placeholder="Observação / Motivo (ex: motivo de revisão ou aprovação)..."></textarea><div class="acao-btns">'+botoesAcao+'</div></div>':'')
     +'<div style="margin-top:10px"><button onclick="abrirOrcDrive('+idx+',event)" style="padding:6px 12px;background:#1565c0;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer;font-weight:700">📂 Abrir orçamento</button></div>'
     +'</div></div>';
 }
@@ -933,7 +997,7 @@ async function aprovAcaoLista(idx,novo,ev){
     var r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:orc.driveId,numero:orc.form['f-num']||'SN',cliente:orc.form['f-cliente']||'SemCliente',data:orc.form['f-data']||new Date().toISOString().split('T')[0],dados:novoDados})});
     var d=await r.json();
     if(!d.ok)throw new Error(d.erro||'Erro ao salvar');
-    if(driveIdAtual===orc.driveId){aprovStatus=novo;aprovHist=novoHist;renderStatusOrc();}
+    if(driveIdAtual===orc.driveId){aprovStatus=novo;aprovHist=novoHist;renderStatusOrc();renderAprovInline();}
     carregarListaAprov(abaAprovAtual);
   }catch(e){alert('⚠️ Erro ao salvar: '+e.message);}
 }
@@ -944,17 +1008,19 @@ async function abrirOrcDrive(idx,ev){
   if(!orc)return;
   if(!confirm('Abrir "'+orc.nome+'"?\nDados não salvos serão perdidos.'))return;
   document.getElementById('aprov-ov').classList.remove('open');
-  isCarregando = true;
+  _carregandoOrc=true;
   var dados=orc.dados;
-  if(dados.state){ state = normalizarState(dados.state); }
+  if(dados.state){SECS.forEach(function(s){if(dados.state[s]){state[s].ambientes=dados.state[s].ambientes||[{id:'default',nome:'Geral'}];state[s].ambAtiva=dados.state[s].ambAtiva||'default';state[s].rows=dados.state[s].rows||{default:[]};if(!state[s].rows[state[s].ambAtiva])state[s].rows[state[s].ambAtiva]=[];}});}
   if(dados.form)setForm(dados.form);
   aprovStatus=dados.aprovStatus||'rascunho';
   aprovHist=dados.aprovHist||[];
   driveIdAtual=orc.driveId;
   driveNumAtual=dados.form&&dados.form['f-num']?dados.form['f-num']:null;
-  buildTabs();calc();renderStatusOrc();
-  setTimeout(function(){document.getElementById('status-orc-card').scrollIntoView({behavior:'smooth',block:'start'});},300);
-  isCarregando = false;
+  buildTabs();calc();renderStatusOrc();renderAprovInline();
+  setTimeout(function(){
+    _carregandoOrc=false;
+    document.getElementById('status-orc-card').scrollIntoView({behavior:'smooth',block:'start'});
+  },400);
 }
 
 // ABAS
@@ -978,7 +1044,7 @@ function buildSecPane(s){
   if(s==='logistica')info='<div style="background:#e8f4fd;border:1px solid #90caf9;border-radius:4px;padding:7px 11px;font-size:10px;color:#1565c0;margin-bottom:7px"><b>🚚 Logística</b> — No PDF aparece como linha única com o valor total.</div>';
   if(s==='extra')info='<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:4px;padding:7px 11px;font-size:10px;color:#7a5a00;margin-bottom:7px"><b>💰 Custos Extra</b> — Uso interno. Não aparece no PDF do cliente.</div>';
   pane.innerHTML=info+'<div class="amb-bar" id="ambbar-'+s+'"></div><div id="ambcontent-'+s+'"></div>';
-  if(s==='logistica'){pane.innerHTML+='<div style="margin-top:11px"><label>Serviços inclusos no PDF (um por linha)</label><textarea id="f-svinc" style="margin-top:4px;background:#f0f7ff;border-color:#90caf9;min-height:60px"></textarea></div>';setTimeout(function(){var ta=document.getElementById('f-svinc');if(ta&&!ta.value)ta.value='Montagem\nDesmontagem\nTransporte';},10);}
+  if(s==='logistica'){pane.innerHTML+='<div style="margin-top:11px"><label>Serviços inclusos no PDF (um por linha)</label><textarea id="f-svinc" style="margin-top:4px;background:#f0f7ff;border-color:#90caf9;min-height:60px" oninput="marcarAlterado()"></textarea></div>';setTimeout(function(){var ta=document.getElementById('f-svinc');if(ta&&!ta.value)ta.value='Montagem\nDesmontagem\nTransporte';},10);}
   renderAmbBar(s);renderAmbContent(s);
 }
 function renderAmbBar(s){
@@ -1004,8 +1070,8 @@ function renderAmbBar(s){
     bar.appendChild(inp);
   }
 }
-function addAmb(s){var st=state[s],id=uid();st.ambientes.push({id:id,nome:'Ambiente '+st.ambientes.length});st.rows[id]=[];st.ambAtiva=id;renderAmbBar(s);renderAmbContent(s);}
-function removerAmb(s,id){var st=state[s];if(!confirm('Remover este ambiente?'))return;st.ambientes=st.ambientes.filter(function(a){return a.id!==id;});delete st.rows[id];if(st.ambAtiva===id)st.ambAtiva=st.ambientes[0].id;renderAmbBar(s);renderAmbContent(s);calc();}
+function addAmb(s){var st=state[s],id=uid();st.ambientes.push({id:id,nome:'Ambiente '+st.ambientes.length});st.rows[id]=[];st.ambAtiva=id;renderAmbBar(s);renderAmbContent(s);marcarAlterado();}
+function removerAmb(s,id){var st=state[s];if(!confirm('Remover este ambiente?'))return;st.ambientes=st.ambientes.filter(function(a){return a.id!==id;});delete st.rows[id];if(st.ambAtiva===id)st.ambAtiva=st.ambientes[0].id;renderAmbBar(s);renderAmbContent(s);calc();marcarAlterado();}
 
 function renderAmbContent(s){
   var el=document.getElementById('ambcontent-'+s);if(!el)return;
@@ -1028,7 +1094,7 @@ function renderAmbContent(s){
   },0);
 }
 
-function moveRow(s,aid,id,dir){var rows=state[s].rows[aid];var i=rows.findIndex(function(r){return r.id===id;});if(i<0||(dir===-1&&i===0)||(dir===1&&i===rows.length-1))return;var item=rows.splice(i,1)[0];rows.splice(i+dir,0,item);renderRows(s);calc();}
+function moveRow(s,aid,id,dir){var rows=state[s].rows[aid];var i=rows.findIndex(function(r){return r.id===id;});if(i<0||(dir===-1&&i===0)||(dir===1&&i===rows.length-1))return;var item=rows.splice(i,1)[0];rows.splice(i+dir,0,item);renderRows(s);calc();marcarAlterado();}
 function selItem(s,sel){if(!sel.value)return;var it=JSON.parse(sel.value);addRow(s,it.n,it.v,false);sel.value='';}
 function addCustom(s){addRow(s,'',0,true);}
 function addRow(s,name,val,custom){
@@ -1036,7 +1102,7 @@ function addRow(s,name,val,custom){
   var painel=s==='video'&&isPainel(name),palco=s==='estrutura'&&isPalco(name);
   var dAuto=s==='servico'?getDiasEvento():s==='logistica'?1:getDiariasEquip();
   st.rows[aid].push({id:uid(),name:name,val:val,qty:1,diaria:dAuto,custom:custom,painel:painel,larg:painel?3:palco?4:null,alt:painel?2:null,prof:palco?2:null,elev:painel?0:null,elObj:palco?ELEV[0]:null,palco:palco,carp:palco?false:null,carpT:palco?'novo':null,carpC:palco?'':null,marg:20});
-  renderRows(s);calc();
+  renderRows(s);calc();marcarAlterado();
 }
 function rowTot(r){if(r.painel)return safe(r.larg*r.alt*r.val*r.diaria*r.qty);if(r.palco||isPalco(r.name))return safe(calcPalco(r).total*r.diaria*r.qty);return safe(r.qty*r.val*r.diaria);}
 function secTotAll(s){return Object.values(state[s].rows).reduce(function(t,arr){return t+arr.reduce(function(a,r){return a+rowTot(r);},0);},0);}
@@ -1137,9 +1203,9 @@ function updRow(s,aid,id,field,val){
   else r[field]=val;
   if(field==='name'&&s==='video'){r.painel=isPainel(val);if(r.painel&&r.larg==null){r.larg=3;r.alt=2;r.elev=0;}}
   if(field==='name'&&s==='estrutura'){r.palco=isPalco(val);if(r.palco){r.larg=4;r.prof=2;r.elObj=ELEV[0];r.carp=false;r.carpT='novo';r.carpC='';}}
-  renderRows(s);calc();
+  renderRows(s);calc();marcarAlterado();
 }
-function delRow(s,aid,id){state[s].rows[aid]=state[s].rows[aid].filter(function(x){return x.id!==id;});renderRows(s);calc();}
+function delRow(s,aid,id){state[s].rows[aid]=state[s].rows[aid].filter(function(x){return x.id!==id;});renderRows(s);calc();marcarAlterado();}
 
 // CÁLCULO
 function syncDesc(from){
@@ -1150,7 +1216,6 @@ function syncDesc(from){
   calc();
 }
 function calc(){
-  markEdited();
   var MAIN=['som','video','luz','estrutura','servico','logistica'];
   MAIN.forEach(function(s){sv('r-'+s,fmt(secTotAll(s)));});
   var bruto=MAIN.reduce(function(t,s){return t+secTotAll(s);},0);
@@ -1169,7 +1234,6 @@ function calc(){
   sv('m-sd',fmt(msd));sv('m-cd',fmt(mcd));sv('m-sd-pct',fmtN(msdP)+'%');sv('m-cd-pct',fmtN(mcdP)+'%');
   var dl=document.getElementById('desc-label');
   if(dl)dl.textContent=dv>0?'Desconto: -'+fmt(dv):(vl>0?'Valor ajustado manualmente':'');
-  // Subtotal por ambiente
   var todosAmbs=[],ambIdsC={};
   ['som','video','luz','estrutura','servico','logistica'].forEach(function(s){state[s].ambientes.forEach(function(a){if(!ambIdsC[a.id]){ambIdsC[a.id]=true;todosAmbs.push({id:a.id,nome:a.nome});}});});
   var subGeral=document.getElementById('subtot-geral-ambientes');
@@ -1184,41 +1248,22 @@ function calc(){
     }else{subGeral.style.display='none';}
   }
   renderStatusOrc();
+  renderAprovInline();
 }
 
 // DRIVE
 function driveStatus(msg,tipo){var el=document.getElementById('drive-status');if(!el)return;el.textContent=msg;el.className='drive-status '+(tipo||'');if(msg)setTimeout(function(){if(el.textContent===msg)el.textContent='';},5000);}
-
 async function driveListar(){
-  var q = (gv('drive-q')||'').trim();
-  var el=document.getElementById('drive-list');
-  
-  if (q === '') {
-    el.style.display='block';
-    el.innerHTML='<div class="drive-item" style="color:#888; border:none">⏳ Buscando todos os orçamentos...</div>';
-  } else {
-    el.style.display='none';
-    driveStatus('⏳ Buscando e carregando...', '');
-  }
-
+  var el=document.getElementById('drive-list');el.style.display='block';
+  el.innerHTML='<div class="drive-item" style="color:#888">⏳ Buscando...</div>';
   try{
-    var r=await fetch(SCRIPT_URL+'?action=list&q='+encodeURIComponent(q));
+    var r=await fetch(SCRIPT_URL+'?action=list&q='+encodeURIComponent(gv('drive-q')||''));
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
     var lista=d.lista||[];
-    
-    if (q === '') {
-        if(!lista.length){el.innerHTML='<div class="drive-item" style="color:#aaa; border:none">Nenhum resultado no Drive.</div>';return;}
-        el.innerHTML=lista.map(function(x){return '<div class="drive-item"><div class="di-nome">📄 '+x.nome+'</div><div class="di-data">'+x.modificado+'</div><button class="btn-dl" onclick="driveCarregar(\''+x.id+'\',\''+eh(x.nome)+'\')">📂 Abrir</button><button class="btn-ddel" onclick="driveDeletar(\''+x.id+'\',\''+eh(x.nome)+'\')" title="Excluir">🗑️</button></div>';}).join('');
-    } else {
-        if(!lista.length){ driveStatus('⚠️ Nenhum orçamento encontrado para "'+q+'"', 'err'); return; }
-        driveCarregar(lista[0].id, lista[0].nome);
-    }
-  }catch(e){
-    if (q === '') { el.innerHTML='<div class="drive-item" style="color:#ff5555; border:none">⚠️ Erro ao conectar</div>'; }
-    driveStatus('Erro: '+e.message,'err');
-  }
+    if(!lista.length){el.innerHTML='<div class="drive-item" style="color:#aaa">Nenhum resultado.</div>';return;}
+    el.innerHTML=lista.map(function(x){return '<div class="drive-item"><div class="di-nome">📄 '+x.nome+'</div><div class="di-data">'+x.modificado+'</div><button class="btn-dl" onclick="driveCarregar(\''+x.id+'\',\''+eh(x.nome)+'\')">📂 Abrir</button><button class="btn-ddel" onclick="driveDeletar(\''+x.id+'\',\''+eh(x.nome)+'\')" title="Excluir">🗑️</button></div>';}).join('');
+  }catch(e){el.innerHTML='<div class="drive-item" style="color:#c0001a">⚠️ Erro ao conectar</div>';driveStatus('Erro: '+e.message,'err');}
 }
-
 async function driveSalvar(){
   driveStatus('⏳ Salvando...','');
   var num=gv('f-num')||'SN',cli=gv('f-cliente')||'SemCliente',dt=gv('f-data')||new Date().toISOString().split('T')[0];
@@ -1227,32 +1272,26 @@ async function driveSalvar(){
     var r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'save',id:driveIdAtual||null,numero:num,cliente:cli,data:dt,dados:{form:getForm(),state:state,aprovStatus:aprovStatus,aprovHist:aprovHist}})});
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
     driveIdAtual=d.id;driveNumAtual=num;
-    driveStatus('✅ Salvo: '+d.nome,'ok');
-    
-    if (document.getElementById('drive-list').style.display === 'block') { driveListar(); }
+    driveStatus('✅ Salvo: '+d.nome,'ok');driveListar();
   }catch(e){driveStatus('Erro: '+e.message,'err');}
 }
-
 async function driveCarregar(id,nome){
   if(!confirm('Carregar "'+nome+'"?\nDados não salvos serão perdidos.'))return;
   driveStatus('⏳ Carregando...','');
-  isCarregando = true;
+  _carregandoOrc=true;
   try{
     var r=await fetch(SCRIPT_URL+'?action=load&id='+id);
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
     var dados=d.dados;
-    
-    if(dados.state) { state = normalizarState(dados.state); }
-    if(dados.form) setForm(dados.form);
+    if(dados.state){SECS.forEach(function(s){if(dados.state[s]){state[s].ambientes=dados.state[s].ambientes||[{id:'default',nome:'Geral'}];state[s].ambAtiva=dados.state[s].ambAtiva||'default';state[s].rows=dados.state[s].rows||{default:[]};if(!state[s].rows[state[s].ambAtiva])state[s].rows[state[s].ambAtiva]=[];}});}
+    if(dados.form)setForm(dados.form);
     aprovStatus=dados.aprovStatus||'rascunho';aprovHist=dados.aprovHist||[];
     driveIdAtual=id;driveNumAtual=dados.form&&dados.form['f-num']?dados.form['f-num']:null;
-    
-    buildTabs();calc();renderStatusOrc();
+    buildTabs();calc();renderStatusOrc();renderAprovInline();
     driveStatus('✅ Carregado: '+nome,'ok');
   }catch(e){driveStatus('Erro: '+e.message,'err');}
-  isCarregando = false;
+  finally{setTimeout(function(){_carregandoOrc=false;},400);}
 }
-
 async function driveDeletar(id,nome){
   if(!confirm('Excluir "'+nome+'"?'))return;
   driveStatus('⏳ Excluindo...','');
@@ -1264,38 +1303,34 @@ async function driveDeletar(id,nome){
 var FORM_IDS=['f-num','f-data','f-val','f-cons','f-cliente','f-doc','f-tel','f-cep','f-end','f-endnum','f-bairro','f-cidade','f-local','f-tipo','f-resp','f-cep-ev','f-end-ev','f-num-ev','f-bairro-ev','f-cid-ev','f-dia','f-sem','f-dia-fim','f-sem-fim','f-hi','f-hf','f-dm','f-hm','f-dd','f-hd','f-pub','f-obs','f-pgto','f-svinc','desc-pct','desc-rs','val-liq'];
 function getForm(){var o={};FORM_IDS.forEach(function(id){var e=document.getElementById(id);if(e)o[id]=e.value;});return o;}
 function setForm(f){Object.keys(f).forEach(function(id){var e=document.getElementById(id);if(e)e.value=f[id];});sv('orc-disp',f['f-num']||'—');}
-
 function salvar(){var blob=new Blob([JSON.stringify({form:getForm(),state:state,aprovStatus:aprovStatus,aprovHist:aprovHist},null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(gv('f-num')||'orc')+' - '+(gv('f-cliente')||'cliente')+'.json';a.click();URL.revokeObjectURL(a.href);}
-
 function carregar(input){
   var file=input.files[0];if(!file)return;
   var fr=new FileReader();
   fr.onload=function(e){
-    isCarregando = true;
     try{
+      _carregandoOrc=true;
       var data=JSON.parse(e.target.result);
-      if(data.state){ state = normalizarState(data.state); }
-      if(data.form) setForm(data.form);
+      if(data.state){SECS.forEach(function(s){if(data.state[s]){state[s].ambientes=data.state[s].ambientes||[{id:'default',nome:'Geral'}];state[s].ambAtiva=data.state[s].ambAtiva||'default';state[s].rows=data.state[s].rows||{default:[]};if(!state[s].rows[state[s].ambAtiva])state[s].rows[state[s].ambAtiva]=[];}});}
+      if(data.form)setForm(data.form);
       aprovStatus=data.aprovStatus||'rascunho';aprovHist=data.aprovHist||[];
-      buildTabs();calc();renderStatusOrc();alert('✅ Carregado!');
+      buildTabs();calc();renderStatusOrc();renderAprovInline();
+      alert('✅ Carregado!');
     }catch(err){alert('⚠️ Arquivo inválido: '+err.message);}
-    isCarregando = false;
+    finally{setTimeout(function(){_carregandoOrc=false;},400);}
   };
   fr.readAsText(file);input.value='';
 }
-
 function limpar(){
   if(!confirm('Limpar todos os dados?'))return;
-  isCarregando = true;
-  state = normalizarState(null);
+  SECS.forEach(function(s){state[s]={ambientes:[{id:'default',nome:'Geral'}],ambAtiva:'default',rows:{default:[]}};});
   FORM_IDS.filter(function(id){return ['desc-pct','desc-rs','val-liq','f-pgto','f-svinc'].indexOf(id)<0;}).forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('f-cons').value='';
   document.getElementById('desc-pct').value=0;document.getElementById('desc-rs').value=0;document.getElementById('val-liq').value='';
   document.getElementById('f-pgto').value='50% na contratação;\n50% até 03 dias antes da montagem.';
   ['cep-st','doc-st','cep-ev-st'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='';});
   sv('orc-disp','—');driveIdAtual=null;driveNumAtual=null;aprovStatus='rascunho';aprovHist=[];
-  buildTabs();calc();renderStatusOrc();
-  isCarregando = false;
+  buildTabs();calc();renderStatusOrc();renderAprovInline();
 }
 
 // PDF
@@ -1460,21 +1495,14 @@ function gerarOS(){
 }
 
 // INIT
-isCarregando = true;
 buildTabs();
 document.getElementById('f-data').value=new Date().toISOString().split('T')[0];
 calcDiariasAuto();
 calc();
 renderStatusOrc();
+renderAprovInline();
 document.getElementById('l-pass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
 document.getElementById('l-user').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('l-pass').focus();});
-setTimeout(function(){
-  FORM_IDS.forEach(function(id){
-    var e = document.getElementById(id);
-    if(e) e.addEventListener('input', markEdited);
-  });
-  isCarregando = false;
-}, 500);
 </script>
 </body>
 </html>
