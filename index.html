@@ -117,7 +117,6 @@ table.it input,table.it select{padding:2px 5px;font-size:11px}
 .orc-topo{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .orc-num{color:#fff;font-size:13px;font-weight:800}
 .orc-cli{color:#aaa;font-size:11px;flex:1}
-.orc-val{color:var(--R);font-size:12px;font-weight:700}
 .orc-badge{padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700}
 .orc-info{font-size:10px;color:#777;line-height:1.9}
 .orc-info b{color:#bbb}
@@ -214,7 +213,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
 <body>
 <div class="wrap">
 
-<!-- LOGIN -->
 <div class="login-ov" id="login-ov">
   <div class="login-box">
     <h2>🎛️ Crazy Som</h2>
@@ -226,7 +224,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- MODAL APROVAÇÕES -->
 <div class="ov" id="aprov-ov">
   <div class="modal-box">
     <h2>📋 Aprovações</h2>
@@ -240,7 +237,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- MODAL ADM -->
 <div class="ov" id="adm-ov">
   <div class="modal-box">
     <h2>⚙️ Gerenciar Usuários</h2>
@@ -253,7 +249,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- MODAL PDF -->
 <div class="ov" id="tipo-modal">
   <div class="modal-box" style="max-width:430px;text-align:center">
     <h2>Gerar PDF</h2>
@@ -283,7 +278,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   <div id="pdf-content"></div>
 </div>
 
-<!-- HEADER -->
 <div class="app-hdr">
   <div><h1>CRAZY SOM – ORÇAMENTO</h1><p>Audiovisual e Estrutura – Uso Interno</p></div>
   <div class="orc-n"><small>Nº Orçamento</small><b id="orc-disp">—</b></div>
@@ -295,7 +289,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- IDENTIFICAÇÃO -->
 <div class="card">
   <div class="st">📋 Identificação</div>
   <div class="g4">
@@ -308,7 +301,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- CLIENTE -->
 <div class="card">
   <div class="st">👤 Dados do Cliente</div>
   <div class="g3">
@@ -325,7 +317,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- LOCAL -->
 <div class="card">
   <div class="st">📍 Local do Evento</div>
   <div class="g3" style="margin-bottom:8px">
@@ -342,7 +333,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- DATAS -->
 <div class="card">
   <div class="st">🗓️ Datas e Horários</div>
   <div class="g4" style="margin-bottom:8px">
@@ -369,7 +359,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- DRIVE -->
 <div class="drive-panel">
   <div class="st" style="margin:-15px -18px 11px">☁️ Orçamentos – Google Drive</div>
   <div class="drive-search">
@@ -381,14 +370,12 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   <div id="drive-status" class="drive-status"></div>
 </div>
 
-<!-- ITENS -->
 <div class="card">
   <div class="st">🎛️ Itens do Orçamento</div>
   <div class="tabs" id="tabs-wrap"></div>
   <div id="panes-wrap"></div>
 </div>
 
-<!-- STATUS -->
 <div class="card" id="status-orc-card">
   <div class="st">✅ Status deste Orçamento</div>
   <div id="status-orc-bar"></div>
@@ -399,7 +386,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- TOTAIS -->
 <div class="totbox">
   <div style="font-size:10px;color:#aaa;margin-bottom:9px;text-transform:uppercase;letter-spacing:1px">📊 Resumo & Margem</div>
   <div class="tg3">
@@ -413,7 +399,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   <div class="sep">
     <div id="subtot-geral-ambientes" style="display:none;background:#0a0a0a;border:1px solid #222;border-radius:6px;padding:11px 14px;margin-bottom:10px"></div>
     <div class="tg3">
-      <div class="ti"><label>Total Bruto</label><span class="tval" id="r-bruto">R$ 0,00</span></div>
+      <div class="ti"><label>Total sem Imposto</label><span class="tval" id="r-bruto">R$ 0,00</span></div>
       <div class="ti"><label>Impostos (13,5%)</label><span class="tval red" id="r-imp">R$ 0,00</span></div>
       <div class="ti"><label>Total c/ Impostos</label><span class="tval" id="r-cimp">R$ 0,00</span></div>
     </div>
@@ -453,6 +439,9 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
     <div><span>TOTAL FINAL (c/ impostos)</span><div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:1px" id="desc-label"></div></div>
     <b id="r-total">R$ 0,00</b>
   </div>
+
+  <div id="status-orc-acoes-bottom" style="display:none;background:#1c1c1c;border:1px solid #333;border-radius:6px;padding:11px 14px;margin-top:9px"></div>
+
   <div class="sbar">
     <span>💾 Orçamento</span>
     <button class="btn btn-g btn-sm" onclick="salvar()">💾 Salvar local</button>
@@ -467,6 +456,7 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
 </div>
 
 <script>
+var isCarregando=false;
 var IMP=0.135;
 var SECS=['som','video','luz','estrutura','servico','logistica','extra'];
 var SEC_LBL={som:'Sonorização',video:'Vídeo',luz:'Iluminação',estrutura:'Estrutura',servico:'Serviço',logistica:'Logística',extra:'Custos Extra'};
@@ -531,6 +521,16 @@ function fD(s){try{return new Date(s+'T12:00:00').toLocaleDateString('pt-BR');}c
 function safe(v){return (isNaN(v)||!isFinite(v))?0:v;}
 function fmtCep(el){var v=el.value.replace(/\D/g,'').slice(0,8);if(v.length>5)v=v.slice(0,5)+'-'+v.slice(5);el.value=v;}
 function fmtDoc(el){var v=el.value.replace(/\D/g,'');if(v.length<=11){if(v.length>9)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6,9)+'-'+v.slice(9);else if(v.length>6)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6);else if(v.length>3)v=v.slice(0,3)+'.'+v.slice(3);}else{v=v.slice(0,14);if(v.length>12)v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8,12)+'-'+v.slice(12);else if(v.length>8)v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8);else if(v.length>5)v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5);else if(v.length>2)v=v.slice(0,2)+'.'+v.slice(2);}el.value=v;}
+
+// MARK EDITED
+function markEdited() {
+  if (isCarregando || !usuarioAtual) return;
+  if (aprovStatus !== 'rascunho') {
+    aprovHist.push({ico:'✏️', acao:'Edição Pós-Aprovação', usuario:usuarioAtual.nome, cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel, data:new Date().toLocaleString('pt-BR'), obs:'Status retornado para Rascunho devido a alterações no orçamento.'});
+    aprovStatus = 'rascunho';
+    renderStatusOrc();
+  }
+}
 
 async function buscaCEP(c,e,n,ci,st,br){
   var cep=document.getElementById(c).value.replace(/\D/g,'');
@@ -672,7 +672,7 @@ function renderStatusOrc(){
   var nivel=usuarioAtual.nivel==='adm'?'consultor':usuarioAtual.nivel;
   var cImpV=cImp;
   var acoes='';
-  var obsHtml='<textarea id="aprov-obs" style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:4px;font-size:11px;resize:none;height:40px;margin-top:8px;background:#fff;color:#222" placeholder="Observação (opcional)..."></textarea>';
+  var obsHtml='<textarea id="aprov-obs" style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:4px;font-size:11px;resize:none;height:40px;margin-top:8px;background:#fff;color:#222" placeholder="Observação (opcional)..." onclick="event.stopPropagation()"></textarea>';
   function btn(cor,txt,fn){return '<button onclick="'+fn+'" style="padding:8px 15px;border:none;border-radius:5px;cursor:pointer;font-size:11px;font-weight:700;color:#fff;background:'+cor+';margin:3px">'+txt+'</button>';}
   if(nivel==='consultor'&&(aprovStatus==='rascunho'||aprovStatus==='revisao')){
     var txt2=aprovStatus==='rascunho'?'📤 Enviar para Análise Técnica':'📤 Reenviar para Análise Técnica';
@@ -691,10 +691,29 @@ function renderStatusOrc(){
     acoes='<p style="font-size:11px;color:#888;padding:6px 0">'+(msgs[aprovStatus]||'')+'</p>';
   }
   sa.innerHTML=acoes;
+
+  // Botões espelhados no final do formulário
+  var sb_bottom = document.getElementById('status-orc-acoes-bottom');
+  if (sb_bottom) {
+    if (acoes && acoes.includes('<button')) {
+      var acoesBot = acoes.replace('id="aprov-obs"', 'id="aprov-obs-bot"').replace(/aprovAcao\(/g, "aprovAcaoBot(");
+      sb_bottom.innerHTML = '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:8px;font-weight:700">Ações de Aprovação</div>' + acoesBot;
+      sb_bottom.style.display = 'block';
+    } else {
+      sb_bottom.style.display = 'none';
+    }
+  }
 }
 
+function aprovAcaoBot(novo) {
+  var obs=(document.getElementById('aprov-obs-bot')||{}).value||'';
+  _aprovAcao(novo, obs);
+}
 function aprovAcao(novo){
   var obs=(document.getElementById('aprov-obs')||{}).value||'';
+  _aprovAcao(novo, obs);
+}
+function _aprovAcao(novo, obs) {
   var icos={analise:'📤',gerencial:'📊',diretoria:'🏆',aprovado:'✅',revisao:'🔄'};
   var atos={analise:'Enviado p/ Análise Técnica',gerencial:'Encaminhado ao Gerente',diretoria:'Encaminhado à Diretoria',aprovado:'Aprovado',revisao:'Revisão Solicitada'};
   aprovHist.push({ico:icos[novo]||'•',acao:atos[novo]||novo,usuario:usuarioAtual.nome,cargo:NIVEIS[usuarioAtual.nivel]||usuarioAtual.nivel,data:new Date().toLocaleString('pt-BR'),obs:obs});
@@ -857,7 +876,6 @@ function buildOrcCard(orc,idx){
     +'<div class="orc-topo">'
     +'<span class="orc-num">'+(orc.form['f-num']||'—')+'</span>'
     +'<span class="orc-cli">'+(orc.form['f-cliente']||'—')+'</span>'
-    +'<span class="orc-val">'+fmt(orc.valor)+'</span>'
     +'<span class="orc-badge" style="background:'+si.bg+';color:'+si.tx+';border:1px solid '+si.bd+'">'+si.label+'</span>'
     +'</div>'
     +'<div class="orc-info">'+infoAgd
@@ -869,7 +887,7 @@ function buildOrcCard(orc,idx){
     +'<div class="etapas">'+etapasHTML+'</div>'
     +'<div id="det-'+idx+'" class="aprov-detalhe">'
     +histHtml
-    +(temAcao?'<div class="acao-wrap"><textarea class="acao-obs" id="obs-'+idx+'" placeholder="Observação (opcional)..."></textarea><div class="acao-btns">'+botoesAcao+'</div></div>':'')
+    +(temAcao?'<div class="acao-wrap"><textarea class="acao-obs" id="obs-'+idx+'" placeholder="Observação (opcional)..." onclick="event.stopPropagation()"></textarea><div class="acao-btns">'+botoesAcao+'</div></div>':'')
     +'<div style="margin-top:10px"><button onclick="abrirOrcDrive('+idx+',event)" style="padding:6px 12px;background:#1565c0;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer;font-weight:700">📂 Abrir orçamento</button></div>'
     +'</div></div>';
 }
@@ -919,6 +937,7 @@ async function abrirOrcDrive(idx,ev){
   if(!orc)return;
   if(!confirm('Abrir "'+orc.nome+'"?\nDados não salvos serão perdidos.'))return;
   document.getElementById('aprov-ov').classList.remove('open');
+  isCarregando = true;
   var dados=orc.dados;
   if(dados.state){SECS.forEach(function(s){if(dados.state[s]){state[s].ambientes=dados.state[s].ambientes||[{id:'default',nome:'Geral'}];state[s].ambAtiva=dados.state[s].ambAtiva||'default';state[s].rows=dados.state[s].rows||{default:[]};if(!state[s].rows[state[s].ambAtiva])state[s].rows[state[s].ambAtiva]=[];}});}
   if(dados.form)setForm(dados.form);
@@ -928,6 +947,7 @@ async function abrirOrcDrive(idx,ev){
   driveNumAtual=dados.form&&dados.form['f-num']?dados.form['f-num']:null;
   buildTabs();calc();renderStatusOrc();
   setTimeout(function(){document.getElementById('status-orc-card').scrollIntoView({behavior:'smooth',block:'start'});},300);
+  isCarregando = false;
 }
 
 // ABAS
@@ -1123,6 +1143,7 @@ function syncDesc(from){
   calc();
 }
 function calc(){
+  markEdited();
   var MAIN=['som','video','luz','estrutura','servico','logistica'];
   MAIN.forEach(function(s){sv('r-'+s,fmt(secTotAll(s)));});
   var bruto=MAIN.reduce(function(t,s){return t+secTotAll(s);},0);
@@ -1185,6 +1206,7 @@ async function driveSalvar(){
 async function driveCarregar(id,nome){
   if(!confirm('Carregar "'+nome+'"?\nDados não salvos serão perdidos.'))return;
   driveStatus('⏳ Carregando...','');
+  isCarregando = true;
   try{
     var r=await fetch(SCRIPT_URL+'?action=load&id='+id);
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
@@ -1196,6 +1218,7 @@ async function driveCarregar(id,nome){
     buildTabs();calc();renderStatusOrc();
     driveStatus('✅ Carregado: '+nome,'ok');
   }catch(e){driveStatus('Erro: '+e.message,'err');}
+  isCarregando = false;
 }
 async function driveDeletar(id,nome){
   if(!confirm('Excluir "'+nome+'"?'))return;
@@ -1213,6 +1236,7 @@ function carregar(input){
   var file=input.files[0];if(!file)return;
   var fr=new FileReader();
   fr.onload=function(e){
+    isCarregando = true;
     try{
       var data=JSON.parse(e.target.result);
       if(data.state){SECS.forEach(function(s){if(data.state[s]){state[s].ambientes=data.state[s].ambientes||[{id:'default',nome:'Geral'}];state[s].ambAtiva=data.state[s].ambAtiva||'default';state[s].rows=data.state[s].rows||{default:[]};if(!state[s].rows[state[s].ambAtiva])state[s].rows[state[s].ambAtiva]=[];}});}
@@ -1220,11 +1244,13 @@ function carregar(input){
       aprovStatus=data.aprovStatus||'rascunho';aprovHist=data.aprovHist||[];
       buildTabs();calc();renderStatusOrc();alert('✅ Carregado!');
     }catch(err){alert('⚠️ Arquivo inválido: '+err.message);}
+    isCarregando = false;
   };
   fr.readAsText(file);input.value='';
 }
 function limpar(){
   if(!confirm('Limpar todos os dados?'))return;
+  isCarregando = true;
   SECS.forEach(function(s){state[s]={ambientes:[{id:'default',nome:'Geral'}],ambAtiva:'default',rows:{default:[]}};});
   FORM_IDS.filter(function(id){return ['desc-pct','desc-rs','val-liq','f-pgto','f-svinc'].indexOf(id)<0;}).forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('f-cons').value='';
@@ -1233,6 +1259,7 @@ function limpar(){
   ['cep-st','doc-st','cep-ev-st'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='';});
   sv('orc-disp','—');driveIdAtual=null;driveNumAtual=null;aprovStatus='rascunho';aprovHist=[];
   buildTabs();calc();renderStatusOrc();
+  isCarregando = false;
 }
 
 // PDF
@@ -1397,6 +1424,7 @@ function gerarOS(){
 }
 
 // INIT
+isCarregando = true;
 buildTabs();
 document.getElementById('f-data').value=new Date().toISOString().split('T')[0];
 calcDiariasAuto();
@@ -1404,6 +1432,13 @@ calc();
 renderStatusOrc();
 document.getElementById('l-pass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
 document.getElementById('l-user').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('l-pass').focus();});
+setTimeout(function(){
+  FORM_IDS.forEach(function(id){
+    var e = document.getElementById(id);
+    if(e) e.addEventListener('input', markEdited);
+  });
+  isCarregando = false;
+}, 500);
 </script>
 </body>
 </html>
