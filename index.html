@@ -1262,7 +1262,7 @@ async function driveListar(){
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
     var lista=d.lista||[];
     if(!lista.length){el.innerHTML='<div class="drive-item" style="color:#aaa">Nenhum resultado.</div>';return;}
-    el.innerHTML=lista.map(function(x){return '<div class="drive-item"><div class="di-nome">📄 '+x.nome+'</div><div class="di-data">'+x.modificado+'</div><button class="btn-dl" onclick="driveCarregar(\''+x.id+'\',\''+eh(x.nome)+'\')">📂 Abrir</button><button class="btn-ddel" onclick="driveDeletar(\''+x.id+'\',\''+eh(x.nome)+'\')" title="Excluir">🗑️</button></div>';}).join('');
+    el.innerHTML=lista.map(function(x){return '<div class="drive-item" style="background:#fff"><div class="di-nome" style="color:#111">📄 '+x.nome+'</div><div class="di-data" style="color:#555">'+x.modificado+'</div><button class="btn-dl" onclick="driveCarregar(\''+x.id+'\',\''+eh(x.nome)+'\')">📂 Abrir</button><button class="btn-ddel" onclick="driveDeletar(\''+x.id+'\',\''+eh(x.nome)+'\')" title="Excluir">🗑️</button></div>';}).join('');
   }catch(e){el.innerHTML='<div class="drive-item" style="color:#c0001a">⚠️ Erro ao conectar</div>';driveStatus('Erro: '+e.message,'err');}
 }
 async function driveSalvar(){
