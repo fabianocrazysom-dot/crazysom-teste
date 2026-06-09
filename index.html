@@ -373,18 +373,6 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
   </div>
 </div>
 
-<!-- DRIVE -->
-<div class="drive-panel">
-  <div class="st" style="margin:-15px -18px 11px">☁️ Orçamentos – Google Drive</div>
-  <div class="drive-search">
-    <input id="drive-q" placeholder="🔍 Buscar por número, cliente ou data...">
-    <button class="btn btn-b btn-sm" onclick="driveListar()">🔍 Localizar</button>
-    <button class="btn btn-g btn-sm" onclick="driveSalvar()">☁️ Salvar no Drive</button>
-  </div>
-  <div id="drive-list" class="drive-list" style="display:none"></div>
-  <div id="drive-status" class="drive-status"></div>
-</div>
-
 <!-- ITENS -->
 <div class="card">
   <div class="st">🎛️ Itens do Orçamento</div>
@@ -463,6 +451,18 @@ table.pres .lrow td{background:rgba(192,0,26,.9);color:#fff;font-weight:900;font
     <h4>⚡ Ação de Aprovação</h4>
     <textarea id="aprov-inline-obs" class="acao-obs" placeholder="Observação / Motivo (ex: motivo de revisão ou aprovação)..."></textarea>
     <div class="btns" id="aprov-inline-btns"></div>
+  </div>
+
+  <!-- DRIVE -->
+  <div class="drive-panel" style="background:#1c1c1c;border:1px solid #2a2a2a;border-radius:8px;padding:12px 14px;margin-top:11px">
+    <div style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:10px">☁️ Orçamentos – Google Drive</div>
+    <div class="drive-search">
+      <input id="drive-q" placeholder="🔍 Buscar por número, cliente ou data..." style="background:#111;color:#ddd;border-color:#333">
+      <button class="btn btn-b btn-sm" onclick="driveListar()">🔍 Localizar</button>
+      <button class="btn btn-g btn-sm" onclick="driveSalvar()">☁️ Salvar no Drive</button>
+    </div>
+    <div id="drive-list" class="drive-list" style="display:none"></div>
+    <div id="drive-status" class="drive-status"></div>
   </div>
 
   <div class="sbar">
@@ -1255,9 +1255,10 @@ function calc(){
 function driveStatus(msg,tipo){var el=document.getElementById('drive-status');if(!el)return;el.textContent=msg;el.className='drive-status '+(tipo||'');if(msg)setTimeout(function(){if(el.textContent===msg)el.textContent='';},5000);}
 async function driveListar(){
   var el=document.getElementById('drive-list');el.style.display='block';
+  var q=(gv('drive-q')||'').trim();
   el.innerHTML='<div class="drive-item" style="color:#888">⏳ Buscando...</div>';
   try{
-    var r=await fetch(SCRIPT_URL+'?action=list&q='+encodeURIComponent(gv('drive-q')||''));
+    var r=await fetch(SCRIPT_URL+'?action=list&q='+encodeURIComponent(q));
     var d=await r.json();if(!d.ok)throw new Error(d.erro);
     var lista=d.lista||[];
     if(!lista.length){el.innerHTML='<div class="drive-item" style="color:#aaa">Nenhum resultado.</div>';return;}
